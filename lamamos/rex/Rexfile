@@ -1,0 +1,67 @@
+user "root";
+private_key "/root/.ssh/id_rsa";
+public_key "/root/.ssh/id_rsa.pub";
+key_auth;
+
+#group martobre => "192.168.0.150", "192.168.0.151";
+group martobre => "192.168.0.151";
+
+require Rex::Logger;
+require Service::user;
+require Service::ntp;
+require Service::resolver;
+require Service::ssh;
+require Service::drbd;
+require Service::nfs;
+require Service::unison;
+require Service::fail2ban;
+require Service::git;
+
+require include::server_web;
+require include::bdd;
+require include::mail;
+require include::pacemaker;
+
+task "configure", group => martobre, sub{
+
+	my $server_name = "serveur";
+	my $domain_name = "martobre.fr";
+
+	Service::user::define({
+
+		'name'		=> 'karlito',
+		'home'		=> '/home/karlito',
+		'password'	=> '8VkkdiF07aWTg',
+	});
+
+
+	Service::ntp::define();
+
+
+	Service::resolver::define({
+
+		'domain_name'	=> 'test.fr',
+		'search_path'	=> ['test.fr'],
+		'name_servers'	=> ['217.6.34.47', '217.6.34.48'],
+	});
+
+	Service::ssh::define();
+
+	include::server_web::define();
+
+	include::bdd::define();
+
+        Service::fail2ban::define();
+
+	include::mail::define();
+
+        Service::unison::define();
+
+	Service::drbd::define();
+
+	Service::nfs::define();
+
+        Service::git::define();
+
+	include::pacemaker::define();
+};
