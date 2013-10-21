@@ -15,4 +15,71 @@ echo "===We copy the configuration of lamamos==="
 cp -r lamamos/* /etc/lamamos/
 
 
+
+
+echo "===Choose the data disk==="
+disks=`lsblk -r -o NAME,TYPE,MOUNTPOINT|sed "1 d"`
+
+
+avalable_disks=()
+while IFS= read -r line
+do
+	name=`echo $line|cut --delimiter=" " -f1`
+	type=`echo $line|cut --delimiter=" " -f2`
+	mount=`echo $line|cut --delimiter=" " -f3`
+
+	if [ "$type" == "part" ] && [ -z "$mount" ];then
+
+		avalable_disks+=("$name")
+	fi
+done < <(printf %s "$disks" /)	#need to be here to create a process subtitution, so the variable are not arased at the end
+
+
+number_disks=${#avalable_disks[@]}
+
+avalable_disks+=("Quit")
+quit_number=${#avalable_disks[@]}
+
+
+PS3='On wich partition must I put the data (WARNING, this partition will be formated): '
+select opt in "${avalable_disks[@]}"
+do
+	if [ "$REPLY" -eq "$quit_number" ]; then	#if we choose to quit
+
+		exit
+	fi
+
+	if [ "$REPLY" -gt "0" ] && [ "$REPLY" -le "$number_disks" ]; then
+
+		break
+	else
+		echo "dafuk"
+	fi
+done
+
+
+
+data_disk="/dev/$opt"
+
+#we ask confirmation
+echo "Your are going to formate the partition $data_disk"
+read -p "Are you sure? [y/n] " -n 1 -r
+echo    # (optional) move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
+
+
+echo "===Formating the drive==="
+dd if=/dev/zero of=$data_disk
+
+
+
+
+
+
+
+
+
 echo "===Finaly we launch the first configuration using Rex==="
