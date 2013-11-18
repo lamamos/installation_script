@@ -8,9 +8,11 @@ task define => sub {
 	install 'drbd8-utils';
 
 	my $variables = {};
+	$variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
 	$variables->{'ddName'} = $CFG::config{'ddName'};
 	$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
         $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+
 
 	file "/etc/drbd.conf",
                 content 	=> template("templates/drbd.conf.tpl", variables => $variables),

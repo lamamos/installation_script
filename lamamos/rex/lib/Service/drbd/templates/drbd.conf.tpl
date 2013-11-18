@@ -39,7 +39,7 @@ resource r0 {
 
                 cram-hmac-alg sha1;
 		data-integrity-alg md5;
-                shared-secret "jhzefdies145641cfd542185cgfcgtf5g42";
+                shared-secret "<%= $variables->{drbdSharedSecret} %>";
 	}
 
 
