@@ -22,6 +22,19 @@ require Service::apache::php;
 require Service::lamadmin;
 require Service::drbd;
 
+require Service::pacemaker;
+require Service::pacemaker::service;
+require Service::pacemaker::primitive;
+require Service::pacemaker::master;
+require Service::pacemaker::property;
+require Service::pacemaker::rsc_defaults;
+require Service::pacemaker::group;
+require Service::pacemaker::colocation;
+require Service::pacemaker::order;
+require Service::pacemaker::clone;
+require Service::pacemaker::location;
+
+
 task "configure", group => martobre, sub{
 
 	if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
@@ -78,6 +91,21 @@ task "configure", group => martobre, sub{
 
 	#install drbd
         Service::drbd::define();
+
+        Service::pacemaker::define({
+
+                'enable_secauth'	=> 1,
+                'authkey_path'		=> '/etc/corosync/authkey',
+                'bind_address'		=> '192.168.0.0',
+                'multicast_address'	=> '226.99.5.1',
+        });
+
+
+        Service::pacemaker::service::define({
+
+                'name'		=> 'pacemaker',
+                'version'	=> '1',
+        });
 
 
 };
