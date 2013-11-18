@@ -20,12 +20,10 @@ require Service::apache;
 require Service::apache::vhost;
 require Service::apache::php;
 require Service::lamadmin;
-
+require Service::drbd;
 
 task "configure", group => martobre, sub{
 
-
-	#print "kikoo";
 	if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
 	    print(STDERR $err, "\n");
 	    exit(1);
@@ -76,6 +74,11 @@ task "configure", group => martobre, sub{
 
 		'install_path' => '/etc/lamamos/admin_panel/',
 	});
+
+
+	#install drbd
+        Service::drbd::define();
+
 
 };
 
