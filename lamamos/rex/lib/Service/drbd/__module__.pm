@@ -9,8 +9,8 @@ task define => sub {
 
 	my $variables = {};
 	$variables->{'ddName'} = $CFG::config{'ddName'};
-
-	print $variables->{'ddName'};
+	$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
 
 	file "/etc/drbd.conf",
                 content 	=> template("templates/drbd.conf.tpl", variables => $variables),

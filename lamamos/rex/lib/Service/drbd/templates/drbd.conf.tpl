@@ -57,13 +57,13 @@ resource r0 {
         on serveur1 {
                 device /dev/drbd0;
                 disk <%= $variables->{ddName} %>;
-                address 192.168.0.200:7788;
+                address <%= $variables->{firstServIP} %>:7788;
                 meta-disk internal;
         }
         on serveur2 {
                 device /dev/drbd0;
-                disk /dev/sda5;
-                address 192.168.0.201:7788;
+                disk <%= $variables->{ddName} %>;
+                address <%= $variables->{SeconServIP} %>:7788;
                 meta-disk internal;
         }
 }
