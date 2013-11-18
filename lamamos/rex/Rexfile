@@ -9,7 +9,7 @@ pass_auth;
 #group martobre => "192.168.0.150", "192.168.0.151";
 group martobre => "127.0.0.1";
 
-use log;
+use config;
 
 require Rex::Logger;
 
