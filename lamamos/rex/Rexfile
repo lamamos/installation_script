@@ -9,6 +9,8 @@ pass_auth;
 #group martobre => "192.168.0.150", "192.168.0.151";
 group martobre => "127.0.0.1";
 
+use log;
+
 require Rex::Logger;
 
 
@@ -31,7 +33,6 @@ task "configure", group => martobre, sub{
 
 	#now the config hash is in : $CFG::config{'varName'};
 	#print $CFG::config{'ddName'}."\n";
-
 
 
 
@@ -76,34 +77,5 @@ task "configure", group => martobre, sub{
 		'install_path' => '/etc/lamamos/admin_panel/',
 	});
 
-
-	
-
 };
 
-
-
-sub ReadCfg
-{
-    my $file = $_[0];
-
-    our $err;
-
-    {   # Put config data into a separate namespace
-        package CFG;
-
-        # Process the contents of the config file
-        my $rc = do($file);
-
-        # Check for errors
-        if ($@) {
-            $::err = "ERROR: Failure compiling '$file' - $@";
-        } elsif (! defined($rc)) {
-            $::err = "ERROR: Failure reading '$file' - $!";
-        } elsif (! $rc) {
-            $::err = "ERROR: Failure processing '$file'";
-        }
-    }
-
-    return ($err);
-}
