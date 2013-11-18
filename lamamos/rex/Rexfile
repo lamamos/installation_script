@@ -33,7 +33,7 @@ task "configure", group => martobre, sub{
 	#print $CFG::config{'ddName'}."\n";
 
 
-
+=pod
 
 	#Install the NTP server
         Service::ntp::define();
@@ -74,7 +74,7 @@ task "configure", group => martobre, sub{
 
 		'install_path' => '/etc/lamamos/admin_panel/',
 	});
-
+=cut
 
 	#install drbd
         Service::drbd::define();

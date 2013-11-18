@@ -56,7 +56,7 @@ resource r0 {
         }
         on serveur1 {
                 device /dev/drbd0;
-                disk /dev/sda5;
+                disk <%= $variables->{ddName} %>;
                 address 192.168.0.200:7788;
                 meta-disk internal;
         }
