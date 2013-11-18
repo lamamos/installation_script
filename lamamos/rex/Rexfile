@@ -23,6 +23,19 @@ require Service::lamadmin;
 task "configure", group => martobre, sub{
 
 
+	#print "kikoo";
+	if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
+	    print(STDERR $err, "\n");
+	    exit(1);
+	}
+
+	#now the config hash is in : $CFG::config{'varName'};
+	#print $CFG::config{'ddName'}."\n";
+
+
+
+
+
 	#Install the NTP server
         Service::ntp::define();
 
@@ -60,7 +73,6 @@ task "configure", group => martobre, sub{
 	#install the admin pannel
 	Service::lamadmin::define({
 
-
 		'install_path' => '/etc/lamamos/admin_panel/',
 	});
 
@@ -68,3 +80,30 @@ task "configure", group => martobre, sub{
 	
 
 };
+
+
+
+sub ReadCfg
+{
+    my $file = $_[0];
+
+    our $err;
+
+    {   # Put config data into a separate namespace
+        package CFG;
+
+        # Process the contents of the config file
+        my $rc = do($file);
+
+        # Check for errors
+        if ($@) {
+            $::err = "ERROR: Failure compiling '$file' - $@";
+        } elsif (! defined($rc)) {
+            $::err = "ERROR: Failure reading '$file' - $!";
+        } elsif (! $rc) {
+            $::err = "ERROR: Failure processing '$file'";
+        }
+    }
+
+    return ($err);
+}
