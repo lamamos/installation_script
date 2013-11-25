@@ -70,9 +70,13 @@ then
     exit 1
 fi
 
+#Nous installons pv pour voir l'avancement du formatage
+apt-get install pv
+taille=`fdisk -l $data_disk | sed -n 2p | cut -d ' ' -f 5`
+
 
 echo "===Formating the drive==="
-dd if=/dev/zero of=$data_disk
+dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$data_disk
 
 
 
