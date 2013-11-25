@@ -18,7 +18,7 @@ cp -r lamamos/* /etc/lamamos/
 
 
 echo "===Choose the data disk==="
-disks=`lsblk -r -o NAME,TYPE,MOUNTPOINT,SIZE|sed "1 d"`
+disks=`lsblk -r -o NAME,TYPE,SIZE,MOUNTPOINT|sed "1 d"`
 
 
 avalable_disks=()
@@ -26,8 +26,8 @@ while IFS= read -r line
 do
 	name=`echo $line|cut --delimiter=" " -f1`
 	type=`echo $line|cut --delimiter=" " -f2`
-	mount=`echo $line|cut --delimiter=" " -f3`
-	size=`echo $line|cut --delimiter=" " -f4`
+	mount=`echo $line|cut --delimiter=" " -f4`
+	size=`echo $line|cut --delimiter=" " -f3`
 
 	if [ "$type" == "part" ] && [ -z "$mount" ];then
 
@@ -59,7 +59,7 @@ do
 done
 
 
-
+opt=`echo $opt|cut --delimiter=" " -f1`
 data_disk="/dev/$opt"
 
 #we ask confirmation
