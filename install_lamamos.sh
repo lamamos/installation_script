@@ -18,7 +18,7 @@ cp -r lamamos/* /etc/lamamos/
 
 
 echo "===Choose the data disk==="
-disks=`lsblk -r -o NAME,TYPE,MOUNTPOINT|sed "1 d"`
+disks=`lsblk -r -o NAME,TYPE,MOUNTPOINT,SIZE|sed "1 d"`
 
 
 avalable_disks=()
@@ -27,10 +27,11 @@ do
 	name=`echo $line|cut --delimiter=" " -f1`
 	type=`echo $line|cut --delimiter=" " -f2`
 	mount=`echo $line|cut --delimiter=" " -f3`
+	size=`echo $line|cut --delimiter=" " -f4`
 
 	if [ "$type" == "part" ] && [ -z "$mount" ];then
 
-		avalable_disks+=("$name")
+		avalable_disks+=("$name ($size)")
 	fi
 done < <(printf %s "$disks" /)	#need to be here to create a process subtitution, so the variable are not arased at the end
 
