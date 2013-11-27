@@ -17,7 +17,8 @@ task define => sub {
 	$variables->{'ddName'} = $CFG::config{'ddName'};
 	$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
         $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
-
+	$variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
 	file "/etc/drbd.conf",
                 content 	=> template("templates/drbd.conf.tpl", variables => $variables),
@@ -42,6 +43,8 @@ sub installSystem {
         $variables->{'ddName'} = $CFG::config{'ddName'};
         $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
         $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
         file "/etc/drbd.conf",
                 content         => template("templates/drbd_install_1.conf.tpl", variables => $variables),

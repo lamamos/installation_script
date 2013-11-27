@@ -54,13 +54,13 @@ resource r0 {
 		#pareil mais en cas de outdated
 		outdated-wfc-timeout 2;
         }
-        on serveur1 {
+        on <%= $variables->{firstServHostName} %> {
                 device /dev/drbd0;
                 disk <%= $variables->{ddName} %>;
                 address <%= $variables->{firstServIP} %>:7788;
                 meta-disk internal;
         }
-        on serveur2 {
+        on <%= $variables->{SeconServHostName} %> {
                 device /dev/drbd0;
                 disk <%= $variables->{ddName} %>;
                 address <%= $variables->{SeconServIP} %>:7788;
