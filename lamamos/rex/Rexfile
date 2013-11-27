@@ -22,17 +22,17 @@ require Service::apache::php;
 require Service::lamadmin;
 require Service::drbd;
 
-require Service::pacemaker;
-require Service::pacemaker::service;
-require Service::pacemaker::primitive;
-require Service::pacemaker::master;
-require Service::pacemaker::property;
-require Service::pacemaker::rsc_defaults;
-require Service::pacemaker::group;
-require Service::pacemaker::colocation;
-require Service::pacemaker::order;
-require Service::pacemaker::clone;
-require Service::pacemaker::location;
+#require Service::pacemaker;
+#require Service::pacemaker::service;
+#require Service::pacemaker::primitive;
+#require Service::pacemaker::master;
+#require Service::pacemaker::property;
+#require Service::pacemaker::rsc_defaults;
+#require Service::pacemaker::group;
+#require Service::pacemaker::colocation;
+#require Service::pacemaker::order;
+#require Service::pacemaker::clone;
+#require Service::pacemaker::location;
 
 
 task "configure", group => martobre, sub{
@@ -92,6 +92,7 @@ task "configure", group => martobre, sub{
 	#install drbd
         Service::drbd::define();
 
+=pod
         Service::pacemaker::define({
 
                 'enable_secauth'	=> 1,
@@ -106,7 +107,7 @@ task "configure", group => martobre, sub{
                 'name'		=> 'pacemaker',
                 'version'	=> '1',
         });
-
+=cut
 
 };
 
