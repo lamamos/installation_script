@@ -42,6 +42,8 @@ task "configure", group => martobre, sub{
 	    exit(1);
 	}
 
+	$CFG::config{'hostName'} = getHostName();
+
 	#now the config hash is in : $CFG::config{'varName'};
 	#print $CFG::config{'ddName'}."\n";
 

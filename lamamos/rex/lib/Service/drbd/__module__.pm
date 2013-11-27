@@ -59,8 +59,14 @@ sub installSystem {
 	#We then start drbd in order to synchronise it (we use restart in case the deamon was already running)
 	`/etc/init.d/drbd restart`;
 
+	#we now define the first serveur as primari (needed for the first synchronisation)
+	if($CFG::config{'hostName'} eq $CFG::config{'firstServHostName'}){
 
-	return 1;
+		`drbdadm -- --overwrite-data-of-peer primary all`
+	}
+
+
+	#return 1;
 };
 
 

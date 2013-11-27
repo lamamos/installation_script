@@ -1,5 +1,5 @@
-sub ReadCfg
-{
+sub ReadCfg{
+
     my $file = $_[0];
 
     our $err;
@@ -21,6 +21,16 @@ sub ReadCfg
     }
 
     return ($err);
+}
+
+sub getHostName {
+
+	open FILE, "/etc/hostname" or die $!;
+	while (my $line = <FILE>){
+
+        	print($line);
+	}
+
 }
 
 1;
