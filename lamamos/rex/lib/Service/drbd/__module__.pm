@@ -80,8 +80,54 @@ sub installSystem {
 		sleep(1);
 	}
 
+	#We stop drbd, in order to configure it and enable dual primarie
+	`/etc/init.d/drbd stop`;
 
-	#return 1;
+	#we configure drbd (last config)
+        my $variables = {};
+        $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
+        $variables->{'ddName'} = $CFG::config{'ddName'};
+        $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+
+        file "/etc/drbd.conf",
+                content         => template("templates/drbd.conf.tpl", variables => $variables),
+                owner           => "root",
+                group           => "root",
+                mode            => "640",
+                on_change       => sub{ service "drbd" => "restart"; };
+
+	#we restart the drbd deamon
+	`/etc/init.d/drbd restart`;
+
+	#we install the soft for OCFS2
+	install 'ocfs2-tools';
+
+	#we format the media in OCFS2. The first server is the one that does it.
+        if($CFG::config{'hostName'} eq $CFG::config{'firstServHostName'}){
+
+                `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
+        }
+
+        my $variables = {};
+        $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+
+        file "/etc/ocfs2/cluster.conf",
+                content         => template("templates/cluster.conf.tpl", variables => $variables),
+                owner           => "root",
+                group           => "root",
+                mode            => "640";
+
+	#finaly we load the kernel modul
+	`/etc/init.d/o2cb load`;
+
+
+	return 1;
 };
 
 

@@ -18,6 +18,10 @@ resource r0 {
 	}
 
 	net{
+
+		allow-two-primaries yes;
+
+
 		#si la connection est idle on attendra ping-int secondes avant d envoyer un packet keep-alive
 		ping-int 10;
 		#timeout avant de considerer l autre noeud mort. en dixieme de secondes
@@ -53,6 +57,8 @@ resource r0 {
 		degr-wfc-timeout 60;
 		#pareil mais en cas de outdated
 		outdated-wfc-timeout 2;
+
+		allow-two-primaries yes;
         }
         on <%= $variables->{firstServHostName} %> {
                 device /dev/drbd0;
