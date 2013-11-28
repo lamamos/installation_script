@@ -84,7 +84,10 @@ sub areTwoServConnected {
 	my $status1 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
         my $status2 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
 
-	if( ($status1 eq "Unknown") || ($status2 eq "Unknown") ){
+
+	#return $status2;
+
+	if( ($status1 eq "Unknown\n") || ($status2 eq "Unknown\n") ){
 
 		return "stop";
 	}else{
