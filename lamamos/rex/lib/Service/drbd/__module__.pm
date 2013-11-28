@@ -7,8 +7,7 @@ task define => sub {
 
 	if($CFG::config{'OCFS2Init'} == "0"){
 
-		#installSystem();
-		print(areTwoServConnected());
+		installSystem();
 	}
 
 	#install 'drbd8-utils';
@@ -62,16 +61,23 @@ sub installSystem {
 	`/etc/init.d/drbd restart`;
 
 	#we wait for the two servers to be connected
-	#/etc/init.d/drbd status | tail -1 | awk {'print $3'}		: SECONDARI/secondari
-	#/etc/init.d/drbd status | tail -1 | awk {'print $4'}		: uptodate/uptodate
+	while(!areTwoServConnected()){
 
-
+		sleep(1);
+	}
 
 
 	#we now define the first serveur as primari (needed for the first synchronisation)
 	if($CFG::config{'hostName'} eq $CFG::config{'firstServHostName'}){
 
 		`drbdadm -- --overwrite-data-of-peer primary all`
+	}
+
+
+	#we then wait for the two servers to be synchronised 
+	while(!areTwoServSync()){
+
+		sleep(1);
 	}
 
 
@@ -84,16 +90,33 @@ sub areTwoServConnected {
 	my $status1 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
         my $status2 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
 
-
-	#return $status2;
+	#the sed at the end remove the \n at the end of the string (if there is one) and it adds an \n every times.
+	#That means that status1 and status2 are ended by only one \n, all the time.
 
 	if( ($status1 eq "Unknown\n") || ($status2 eq "Unknown\n") ){
 
-		return "stop";
+		return FALSE;
 	}else{
 
-		return "ok go";
+		return TRUE;
 	}
+}
+
+sub areTwoServSync {
+
+        my $status1 = `/etc/init.d/drbd status | tail -1 | awk {'print \$4'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
+        my $status2 = `/etc/init.d/drbd status | tail -1 | awk {'print \$4'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
+
+        #the sed at the end remove the \n at the end of the string (if there is one) and it adds an \n every times.
+        #That means that status1 and status2 are ended by only one \n, all the time.
+
+        if( ($status1 eq "UpToDate\n") || ($status2 eq "UpToDate\n") ){
+
+                return TRUE;
+        }else{
+
+                return FALSE;
+        }
 }
 
 
