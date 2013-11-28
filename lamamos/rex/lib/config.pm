@@ -28,9 +28,8 @@ sub getHostName {
 	open FILE, "/etc/hostname" or die $!;
 	while (my $line = <FILE>){
 
-        	print($line);
+        	return $line;
 	}
-
 }
 
 1;

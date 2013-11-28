@@ -7,27 +7,28 @@ task define => sub {
 
 	if($CFG::config{'OCFS2Init'} == "0"){
 
-		installSystem();
+		#installSystem();
+		print(areTwoServConnected());
 	}
 
-	install 'drbd8-utils';
+	#install 'drbd8-utils';
 
-	my $variables = {};
-	$variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
-	$variables->{'ddName'} = $CFG::config{'ddName'};
-	$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
-        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
-	$variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
-        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+	#my $variables = {};
+	#$variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
+	#$variables->{'ddName'} = $CFG::config{'ddName'};
+	#$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+        #$variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+	#$variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        #$variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
-	file "/etc/drbd.conf",
-                content 	=> template("templates/drbd.conf.tpl", variables => $variables),
-		owner		=> "root",
-		group		=> "root",
-		mode		=> "640",
-		on_change	=> sub{ service "drbd" => "restart"; };
+	#file "/etc/drbd.conf",
+        #        content 	=> template("templates/drbd.conf.tpl", variables => $variables),
+	#	owner		=> "root",
+	#	group		=> "root",
+	#	mode		=> "640",
+	#	on_change	=> sub{ service "drbd" => "restart"; };
 
-	service drbd => ensure => "started";
+	#service drbd => ensure => "started";
 };
 
 sub installSystem {
@@ -57,7 +58,15 @@ sub installSystem {
 	`drbdadm create-md r0`;
 
 	#We then start drbd in order to synchronise it (we use restart in case the deamon was already running)
+	#!!Certanly useless considering that the fact of changing the config file already restarted the deamon
 	`/etc/init.d/drbd restart`;
+
+	#we wait for the two servers to be connected
+	#/etc/init.d/drbd status | tail -1 | awk {'print $3'}		: SECONDARI/secondari
+	#/etc/init.d/drbd status | tail -1 | awk {'print $4'}		: uptodate/uptodate
+
+
+
 
 	#we now define the first serveur as primari (needed for the first synchronisation)
 	if($CFG::config{'hostName'} eq $CFG::config{'firstServHostName'}){
@@ -68,6 +77,23 @@ sub installSystem {
 
 	#return 1;
 };
+
+
+sub areTwoServConnected {
+
+	my $status1 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
+        my $status2 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
+
+	if( ($status1 eq "Unknown") || ($status2 eq "Unknown") ){
+
+		return "stop";
+	}else{
+
+		return "ok go";
+	}
+}
+
+
 
 
 1;
