@@ -60,7 +60,7 @@ resource r0 {
 		outdated-wfc-timeout 2;
 
 		#We don't allow the fact of becomming a primari for now (at the begining of the install)
-		#allow-two-primaries yes;
+		#become-primary-on both;
         }
         on <%= $variables->{firstServHostName} %> {
                 device /dev/drbd0;

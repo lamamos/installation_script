@@ -58,7 +58,7 @@ resource r0 {
 		#pareil mais en cas de outdated
 		outdated-wfc-timeout 2;
 
-		allow-two-primaries yes;
+		become-primary-on both;
         }
         on <%= $variables->{firstServHostName} %> {
                 device /dev/drbd0;
