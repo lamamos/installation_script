@@ -7,28 +7,28 @@ task define => sub {
 
 	if($CFG::config{'OCFS2Init'} == "0"){
 
-		#installSystem();
+		installSystem();
 		$CFG::config{'OCFS2Init'} = "1";
 	}
 
-	#install 'drbd8-utils';
+        install ["drbd8-utils", "ocfs2-tools"];
 
-	#my $variables = {};
-	#$variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
-	#$variables->{'ddName'} = $CFG::config{'ddName'};
-	#$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
-        #$variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
-	#$variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
-        #$variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+	my $variables = {};
+	$variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
+	$variables->{'ddName'} = $CFG::config{'ddName'};
+	$variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+	$variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
-	#file "/etc/drbd.conf",
-        #        content 	=> template("templates/drbd.conf.tpl", variables => $variables),
-	#	owner		=> "root",
-	#	group		=> "root",
-	#	mode		=> "640",
-	#	on_change	=> sub{ service "drbd" => "restart"; };
+	file "/etc/drbd.conf",
+                content 	=> template("templates/drbd.conf.tpl", variables => $variables),
+		owner		=> "root",
+		group		=> "root",
+		mode		=> "640",
+		on_change	=> sub{ service "drbd" => "restart"; };
 
-	#service drbd => ensure => "started";
+	service drbd => ensure => "started";
 };
 
 sub installSystem {
