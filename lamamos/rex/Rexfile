@@ -111,5 +111,10 @@ task "configure", group => martobre, sub{
         });
 =cut
 
+
+	#print $CFG::config{'OCFS2Init'};
+
+	writeCfg($CFG::config);
+
 };
 

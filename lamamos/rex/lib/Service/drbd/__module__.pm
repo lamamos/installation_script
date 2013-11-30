@@ -7,7 +7,8 @@ task define => sub {
 
 	if($CFG::config{'OCFS2Init'} == "0"){
 
-		installSystem();
+		#installSystem();
+		$CFG::config{'OCFS2Init'} = "1";
 	}
 
 	#install 'drbd8-utils';
