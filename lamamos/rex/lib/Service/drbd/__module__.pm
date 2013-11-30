@@ -69,7 +69,7 @@ sub installSystem {
 
 
 	#we now define the first serveur as primari (needed for the first synchronisation)
-	if($CFG::config{'hostName'} eq $CFG::config{'firstServHostName'}){
+	if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
 		`drbdadm -- --overwrite-data-of-peer primary all`
 	}
@@ -107,7 +107,7 @@ sub installSystem {
 	install 'ocfs2-tools';
 
 	#we format the media in OCFS2. The first server is the one that does it.
-        if($CFG::config{'hostName'} eq $CFG::config{'firstServHostName'}){
+        if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
                 `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
         }

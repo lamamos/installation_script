@@ -42,7 +42,7 @@ task "configure", group => martobre, sub{
 	    exit(1);
 	}
 
-	$CFG::config{'hostName'} = getHostName();
+	$CFG::hostName = getHostName();
 
 	#now the config hash is in : $CFG::config{'varName'};
 	#print $CFG::config{'ddName'}."\n";
@@ -114,7 +114,7 @@ task "configure", group => martobre, sub{
 
 	#print $CFG::config{'OCFS2Init'};
 
-	writeCfg($CFG::config);
+	writeCfg('/etc/lamamos/lamamos.conf');
 
 };
 
