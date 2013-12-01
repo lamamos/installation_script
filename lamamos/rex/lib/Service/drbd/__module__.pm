@@ -71,6 +71,7 @@ sub installSystem {
 	#we now define the first serveur as primari (needed for the first synchronisation)
 	if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
+		print("I am the master !!!! \n\n");
 		`drbdadm -- --overwrite-data-of-peer primary all`
 	}
 
