@@ -92,7 +92,7 @@ task "configure", group => martobre, sub{
 =cut
 
 	#install drbd
-        Service::drbd::define();
+        #Service::drbd::define();
 
 =pod
         Service::pacemaker::define({

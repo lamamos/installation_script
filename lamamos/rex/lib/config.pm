@@ -47,6 +47,8 @@ sub getHostName {
 	open FILE, "/etc/hostname" or die $!;
 	while (my $line = <FILE>){
 
+		#the chomp remove the \n at the end of the line
+		chomp($line);
         	return $line;
 	}
 }
