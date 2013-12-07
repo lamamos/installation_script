@@ -86,7 +86,7 @@ sub sameClone {
 
 	if($resource_name ne	$variables->{primitive}){return 0;}
 
-	if(!checkMeta($data, $variables)){return 0;}
+#	if(!checkMeta($data, $variables)){return 0;}
 
 	return 1;
 };
