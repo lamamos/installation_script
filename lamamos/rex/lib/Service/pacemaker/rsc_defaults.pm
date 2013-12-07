@@ -46,20 +46,26 @@ sub rscDefined {
 	my $cib = Service::pacemaker::globfunc::getCIB();
 
 	my @rsc_defaults = Service::pacemaker::globfunc::findAll('rsc_defaults', $cib);
-	my @attributes = $rsc_defaults[0]->findnodes('meta_attributes');	
-	my @values = $attributes[0]->findnodes('nvpair');
 
-	my $exists = 0;
-        foreach(@values){
+	my $size = @rsc_defaults;
 
-                my $tmp = new XML::Simple;
-                my $data = $tmp->XMLin($_->toString(), ForceArray => 1);
+        my $exists = 0;
+	if($size != 0){
+	
+		my @attributes = $rsc_defaults[0]->findnodes('meta_attributes');	
+		my @values = $attributes[0]->findnodes('nvpair');
+	
+	        foreach(@values){
 
-                if(sameRscDefault($data, $variables)){
+	                my $tmp = new XML::Simple;
+	                my $data = $tmp->XMLin($_->toString(), ForceArray => 1);
 
-			$exists = 1;
-                }
-        }
+	                if(sameRscDefault($data, $variables)){
+
+				$exists = 1;
+	                }
+	        }
+	}
 
 	return $exists;
 }
