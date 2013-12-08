@@ -64,7 +64,8 @@ sub installSystem {
 	#we wait for the two servers to be connected
 	while(!areTwoServConnected()){
 
-		sleep(1);
+		print("We are waitting for the other node to connect\n");
+		sleep(3);
 	}
 
 
@@ -78,7 +79,8 @@ sub installSystem {
 	#we then wait for the two servers to be synchronised 
 	while(!areTwoServSync()){
 
-		sleep(1);
+		print("We are waitting for the two servers to synchronise.\n");
+		sleep(3);
 	}
 
 	#We stop drbd, in order to configure it and enable dual primarie
