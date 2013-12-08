@@ -46,6 +46,7 @@ task define => sub {
                 mode    => 644;
 
 	service corosync => ensure => "started";
+        service pacemaker => ensure => "started";
 
 };
 
