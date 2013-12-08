@@ -46,7 +46,10 @@ task define => sub {
                 mode    => 644;
 
 	service corosync => ensure => "started";
-        service pacemaker => ensure => "started";
+
+        #service pacemaker => ensure => "started";
+
+	`/etc/init.d/pacemaker start`;
 
 };
 

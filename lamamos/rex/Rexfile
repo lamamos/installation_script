@@ -90,11 +90,10 @@ task "configure", group => martobre, sub{
 		'install_path' => '/etc/lamamos/admin_panel/',
 	});
 
-
 =cut
+
 	#install drbd
         Service::drbd::define();
-
 
 
 	#pacemaker
