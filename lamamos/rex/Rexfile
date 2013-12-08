@@ -90,25 +90,11 @@ task "configure", group => martobre, sub{
 		'install_path' => '/etc/lamamos/admin_panel/',
 	});
 
+
+=cut
 	#install drbd
         Service::drbd::define();
 
-
-        Service::pacemaker::define({
-
-                'enable_secauth'	=> 1,
-                'authkey_path'		=> '/etc/corosync/authkey',
-                'bind_address'		=> '192.168.0.0',
-                'multicast_address'	=> '226.99.5.1',
-        });
-
-
-        Service::pacemaker::service::define({
-
-                'name'		=> 'pacemaker',
-                'version'	=> '1',
-        });
-=cut
 
 
 	#pacemaker

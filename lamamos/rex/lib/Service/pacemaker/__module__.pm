@@ -15,6 +15,13 @@ task define => sub {
 	install "corosync";
 	install "pacemaker";
 
+	file "/etc/corosync/authkey",
+		source => "/etc/lamamos/authkey",
+		owner => "root",
+		group => "root",
+		mode => "500";
+
+
 	file "/etc/corosync/corosync.conf",
 		content => template("templates/corosync.conf.tpl", variables => $variables),
 		owner => "root",
