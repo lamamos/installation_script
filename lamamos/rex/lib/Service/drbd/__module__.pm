@@ -158,7 +158,7 @@ sub areTwoServSync {
         #the sed at the end remove the \n at the end of the string (if there is one) and it adds an \n every times.
         #That means that status1 and status2 are ended by only one \n, all the time.
 
-        if( (($status1 eq "UpToDate\n") && ($status2 eq "UpToDate\n")) || (($status1 eq "DUnknown\n") || ($status2 eq "DUnknown\n")) ){
+        if( (($status1 eq "UpToDate\n") && ($status2 eq "UpToDate\n")) || (!areTwoServConnected()) ){
 
                 return TRUE;
         }else{
