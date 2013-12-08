@@ -35,7 +35,9 @@ resource r0 {
 
 		after-sb-0pri discard-least-changes;
 		after-sb-1pri consensus;
-                after-sb-2pri discard-least-changes;
+                #after-sb-2pri discard-least-changes;
+                after-sb-2pri call-pri-lost-after-sb;
+
 
 		# Si le rôle du serveur est incompatible avec la resynchronisation des ressources : déconnexion
 		#rr-conflict disconnect;

@@ -46,20 +46,25 @@ sub propertyDefined {
 	my $cib = Service::pacemaker::globfunc::getCIB();
 
 	my @property_set = Service::pacemaker::globfunc::findAll('cluster_property_set', $cib);
-	my @propertys = $property_set[0]->findnodes('nvpair');	
+
 
 	my $exists = 0;
-        foreach(@propertys){
 
-                my $tmp = new XML::Simple;
-                my $data = $tmp->XMLin($_->toString(), ForceArray => 1);
+	my $size = @property_set;
+	if($size != 0){
+		my @propertys = $property_set[0]->findnodes('nvpair');	
 
-                if(sameProperty($data, $variables)){
+	        foreach(@propertys){
 
-			$exists = 1;
-                }
-        }
+        	        my $tmp = new XML::Simple;
+                	my $data = $tmp->XMLin($_->toString(), ForceArray => 1);
 
+               	 if(sameProperty($data, $variables)){
+
+				$exists = 1;
+        	        }
+        	}
+	}
 	return $exists;
 }
 
