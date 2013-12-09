@@ -114,11 +114,17 @@ task "configure", group => martobre, sub{
         });
 
 
-        Service::pacemaker::property::define({
 
-                'name' => 'no-quorum-policy',
-                'value' => 'ignore',
-        });
+        #we now define the first serveur as primari (needed for the first synchronisation)
+        if($CFG::hostName eq $CFG::config{'firstServHostName'}){
+
+
+
+	        Service::pacemaker::property::define({
+
+	                'name' => 'no-quorum-policy',
+        	        'value' => 'ignore',
+       		 });
 
         Service::pacemaker::property::define({
 
@@ -270,7 +276,7 @@ Service::pacemaker::order::define({
 });
 
 
-
+	} #end of the if firstServer
 
 
 
