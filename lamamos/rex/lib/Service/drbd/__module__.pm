@@ -106,7 +106,8 @@ sub installSystem {
 
 	#we install the soft for OCFS2
 	#install 'ocfs2-tools';
-        install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
+        install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker"];
+	#openais was removed to test if it was it that made everything go wrong
 
 	#we format the media in OCFS2. The first server is the one that does it.
         if($CFG::hostName eq $CFG::config{'firstServHostName'}){
