@@ -92,6 +92,7 @@ task "configure", group => martobre, sub{
 
 =cut
 
+
 	#install drbd
         Service::drbd::define();
 
@@ -113,6 +114,13 @@ task "configure", group => martobre, sub{
                 'version'        => '1',
         });
 
+	#need to wait for the two servers to be connected
+	while(!areTwoServConnectedToPacemaker()){
+
+		#the two servers are connected
+		print "We are waitting for the two servers to connect.\n";
+		sleep(3);	
+	}
 
 
         #we now define the first serveur as primari (needed for the first synchronisation)
@@ -280,9 +288,24 @@ Service::pacemaker::order::define({
 
 
 
-	#print $CFG::config{'OCFS2Init'};
 
+
+	#print $CFG::config{'OCFS2Init'};
 	writeCfg('/etc/lamamos/lamamos.conf');
 
 };
 
+sub areTwoServConnectedToPacemaker {
+
+        my $status1 = `crm node show | grep \"$CFG::config{'firstServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
+        my $status2 = `crm node show | grep \"$CFG::config{'SeconServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
+
+        if( ($status1 eq "normal\n") && ($status2 eq "normal\n") ){
+
+                #the two servers are connected
+		return TRUE;
+        }else{
+
+		return FALSE;
+	}
+}
