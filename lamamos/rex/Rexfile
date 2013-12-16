@@ -201,7 +201,7 @@ Service::pacemaker::colocation::define({
 Service::pacemaker::order::define({
 
     'name' => 'ordDRBDDLM',
-    'score' => 'INFINITY',
+    'score' => '0',
     'first' => 'ms_drbd_ocfs2:promote',
     'second' => 'cloneDLM',
 });
@@ -238,7 +238,7 @@ Service::pacemaker::colocation::define({
 Service::pacemaker::order::define({
 
     'name' => 'ordDLMO2CB',
-    'score' => 'INFINITY',
+    'score' => '0',
     'first' => 'cloneDLM',
     'second' => 'cloneO2CB',
 });

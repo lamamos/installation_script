@@ -45,6 +45,16 @@ task define => sub {
                 group   => "root",
                 mode    => 644;
 
+
+
+	#before launching pacemaker and corosync we stop all the services that they are going to manage
+	`update-rc.d drbd remove`;
+        `update-rc.d ocfs2 remove`;
+        `update-rc.d o2cb remove`;
+
+
+
+
 	service corosync => ensure => "started";
 
         #service pacemaker => ensure => "started";
