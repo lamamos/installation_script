@@ -349,11 +349,16 @@ sub secondPartInstall {
     sleep(2);
   };
 
+  #hugly as hell, we need to wait for pacemaker to finish to start
+  sleep(10);
+
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     #put the nodes in standby mode (for reboot)
     `crm node online serveur1`;
+    sleep(1);
     `crm node online serveur2`;
+    sleep(1);
     `crm configure property maintenance-mode=false`;
 
 
