@@ -145,11 +145,6 @@ sub installBaseSysteme {
 
     `shutdown -r now`;
 
-    sleep(10);
-
-    `shutdown -r now`;
-
-
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
     secondPartInstall();
