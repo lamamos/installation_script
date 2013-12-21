@@ -143,7 +143,12 @@ sub installBaseSysteme {
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
 
-    `shutdown -h now`;
+    `shutdown -r now`;
+
+    sleep(10);
+
+    `shutdown -r now`;
+
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -350,15 +355,16 @@ sub secondPartInstall {
   };
 
   #hugly as hell, we need to wait for pacemaker to finish to start
-  sleep(10);
+  sleep(15);
 
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     #put the nodes in standby mode (for reboot)
+    sleep(5);
     `crm node online serveur2`;
-    sleep(1);
+    sleep(5);
     `crm node online serveur1`;
-    sleep(1);
+    sleep(5);
     `crm configure property maintenance-mode=false`;
 
 
