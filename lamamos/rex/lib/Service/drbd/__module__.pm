@@ -127,7 +127,7 @@ sub installSystem {
                 mode            => "640";
 
 	#finaly we load the kernel modul
-	`/etc/init.d/o2cb load`;
+	#`/etc/init.d/o2cb load`;
 
 
 	return 1;
