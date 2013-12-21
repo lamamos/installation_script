@@ -52,7 +52,7 @@ task define => sub {
         `update-rc.d ocfs2 remove`;
         `update-rc.d o2cb remove`;
 
-	#`/etc/init.d/o2cb stop`;
+	`/etc/init.d/o2cb stop`;
 
 
 
