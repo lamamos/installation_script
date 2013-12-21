@@ -60,7 +60,7 @@ task define => sub {
 
         #service pacemaker => ensure => "started";
 
-	#`/etc/init.d/pacemaker start`;
+	`/etc/init.d/pacemaker start`;
 
 };
 
