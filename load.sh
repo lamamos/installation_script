@@ -1,4 +1,5 @@
 #!/bin/bash
+git pull
 
 rm -r /etc/lamamos/rex
 mkdir /etc/lamamos/rex
