@@ -99,8 +99,10 @@ task "configure", group => martobre, sub{
 
 
 	#folder for the shared hard drives
-	`mkdir /data`;
-
+        mkdir "/data",
+                owner   => "root",
+                group   => "root",
+                mode    => 755;
 
 
 
