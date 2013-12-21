@@ -140,7 +140,10 @@ sub installBaseSysteme {
     `crm node standby serveur2`;
     `crm configure property maintenance-mode=true`;
 
-    `shutdown -h now`;
+    #ugly as hell, need to wait for the modifs in pacemaker to take effect
+    sleep(10);
+
+    `shutdown -r now`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
