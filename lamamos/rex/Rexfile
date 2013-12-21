@@ -138,8 +138,9 @@ sub installBaseSysteme {
     #put the nodes in standby mode (for reboot)
     `crm node standby serveur1`;
     `crm node standby serveur2`;
+    `crm configure property maintenance-mode=true`;
 
-    `shutdown -h now`;
+    `shutdown -r now`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -354,6 +355,7 @@ sub secondPartInstall {
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     #put the nodes in standby mode (for reboot)
+    `crm configure property maintenance-mode=false`;
     `crm node online serveur1`;
     `crm node online serveur2`;
 
@@ -361,8 +363,6 @@ sub secondPartInstall {
 
 
     #ajout du montage du filse systeme.
-=pod
-
     # primitive p_fs_ocfs2 ocf:heartbeat:Filesystem params device="/dev/drbd0" directory="/data" fstype="ocfs2" options="rw,noatime"
     Service::pacemaker::primitive::define({
 
@@ -397,9 +397,6 @@ sub secondPartInstall {
       'second' => 'cl_fs_ocfs2:start',
     });
 
-=cut
-
-
   }
 
   #(need to change the split brain management)
@@ -418,7 +415,7 @@ sub isPacemakerRunning {
 
   my $status = `/etc/init.d/drbd status | grep \"is running...\" | wc -l`;
 
-  if($status eq "0\n"){
+  if($status eq "0"){
 
     return FALSE;
   }else{
