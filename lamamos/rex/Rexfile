@@ -97,6 +97,16 @@ task "configure", group => martobre, sub{
         Service::drbd::define();
 
 
+
+	#folder for the shared hard drives
+	`mkdir /data`;
+
+
+
+
+
+
+
 	#pacemaker
 	
         Service::pacemaker::define({
@@ -247,7 +257,7 @@ Service::pacemaker::order::define({
 
 
 
-
+=pod
 
 # primitive p_fs_ocfs2 ocf:heartbeat:Filesystem params device="/dev/drbd0" directory="/data" fstype="ocfs2" options="rw,noatime"
 Service::pacemaker::primitive::define({
@@ -283,6 +293,7 @@ Service::pacemaker::order::define({
     'second' => 'cl_fs_ocfs2:start',
 });
 
+=cut
 
 	} #end of the if firstServer
 
