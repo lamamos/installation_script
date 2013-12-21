@@ -140,7 +140,7 @@ sub installBaseSysteme {
     `crm node standby serveur2`;
     `crm configure property maintenance-mode=true`;
 
-    `shutdown -r now`;
+    `shutdown -h now`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -346,22 +346,24 @@ sub secondPartInstall {
     sleep(2);
   };
 
-
-  #ugly as hell, but should be fine for now (to wait for drbd to start)
-  sleep(10);
-
-  `drbdadm primary all`;
-
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     #put the nodes in standby mode (for reboot)
-    `crm configure property maintenance-mode=false`;
     `crm node online serveur1`;
     `crm node online serveur2`;
+    `crm configure property maintenance-mode=false`;
+
+
+    #need to wait for drbd to be launched
+    #ugly as hell, but should be fine for now (to wait for drbd to start)
+    sleep(10);
+
+    `drbdadm primary all`;
 
     `tunefs.ocfs2 --yes --update-cluster-stack /dev/drbd0`;
 
 
+=pod
     #ajout du montage du filse systeme.
     # primitive p_fs_ocfs2 ocf:heartbeat:Filesystem params device="/dev/drbd0" directory="/data" fstype="ocfs2" options="rw,noatime"
     Service::pacemaker::primitive::define({
@@ -396,6 +398,7 @@ sub secondPartInstall {
       'first' => 'cloneO2CB',
       'second' => 'cl_fs_ocfs2:start',
     });
+=cut
 
   }
 
