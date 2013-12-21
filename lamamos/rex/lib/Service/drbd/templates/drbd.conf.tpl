@@ -35,8 +35,8 @@ resource r0 {
 
 		after-sb-0pri discard-least-changes;
 		after-sb-1pri consensus;
-                #after-sb-2pri discard-least-changes;
-                after-sb-2pri call-pri-lost-after-sb;
+                after-sb-2pri discard-least-changes;	#works with ocfs2
+                #after-sb-2pri call-pri-lost-after-sb;	#works at the start
 
 
 		# Si le rôle du serveur est incompatible avec la resynchronisation des ressources : déconnexion
