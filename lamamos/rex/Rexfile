@@ -361,9 +361,9 @@ sub secondPartInstall {
 
     #put the nodes in standby mode (for reboot)
     sleep(5);
-    `crm node online serveur2`;
-    sleep(5);
     `crm node online serveur1`;
+    sleep(5);
+    `crm node online serveur2`;
     sleep(5);
     `crm configure property maintenance-mode=false`;
 
