@@ -139,7 +139,7 @@ sub installBaseSysteme {
     `crm node standby serveur1`;
     `crm node standby serveur2`;
 
-    `shutdown -r now`;
+    `shutdown -h now`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -338,10 +338,18 @@ sub firstPartInstall {
 
 sub secondPartInstall {
 
-
   `/etc/init.d/pacemaker start`;
+  while(!isPacemakerRunning()){
 
-  `drbdam primary all`;
+		print("We are waitting for pacemakert to start\n");
+    sleep(2);
+  };
+
+
+  #ugly as hell, but should be fine for now (to wait for drbd to start)
+  sleep(10);
+
+  `drbdadm primary all`;
 
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
@@ -350,11 +358,9 @@ sub secondPartInstall {
     `crm node online serveur2`;
 
     `tunefs.ocfs2 --yes --update-cluster-stack /dev/drbd0`;
-  }
 
 
-
-  #ajout du montage du filse systeme.
+    #ajout du montage du filse systeme.
 =pod
 
     # primitive p_fs_ocfs2 ocf:heartbeat:Filesystem params device="/dev/drbd0" directory="/data" fstype="ocfs2" options="rw,noatime"
@@ -393,17 +399,33 @@ sub secondPartInstall {
 
 =cut
 
+
+  }
+
   #(need to change the split brain management)
-
-
   #mount -t ocfs2 /dev/drbd0 /data
-
-
 
 }
 
 
 
+
+
+
+
+
+sub isPacemakerRunning {
+
+  my $status = `/etc/init.d/drbd status | grep \"is running...\" | wc -l`;
+
+  if($status eq "0\n"){
+
+    return FALSE;
+  }else{
+
+    return TRUE;
+  }
+}
 
 
 
