@@ -143,7 +143,7 @@ sub installBaseSysteme {
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
 
-    `shutdown -r now`;
+    `shutdown -h now`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
