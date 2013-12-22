@@ -376,6 +376,7 @@ sub secondPartInstall {
     sleep(10);
 
     `drbdadm primary all`;
+    sleep(10);
 
     `tunefs.ocfs2 --yes --update-cluster-stack /dev/drbd0`;
 
