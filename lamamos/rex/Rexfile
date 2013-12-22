@@ -380,8 +380,6 @@ sub secondPartInstall {
 
     `tunefs.ocfs2 --yes --update-cluster-stack /dev/drbd0`;
 
-
-=pod
     #ajout du montage du filse systeme.
     # primitive p_fs_ocfs2 ocf:heartbeat:Filesystem params device="/dev/drbd0" directory="/data" fstype="ocfs2" options="rw,noatime"
     Service::pacemaker::primitive::define({
@@ -416,7 +414,7 @@ sub secondPartInstall {
       'first' => 'cloneO2CB',
       'second' => 'cl_fs_ocfs2:start',
     });
-=cut
+
 
   }else{  #second server
 
@@ -425,8 +423,14 @@ sub secondPartInstall {
     `drbdadm primary all`;
   }
 
+
+
+
+
+
+
+
   #(need to change the split brain management)
-  #mount -t ocfs2 /dev/drbd0 /data
 
 }
 
