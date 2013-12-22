@@ -438,6 +438,18 @@ sub isPacemakerRunning {
 
 
 
+task "reboot", group => martobre, sub{
+
+
+
+  rex-reboot;
+
+
+}
+
+
+
+
 
 
 
