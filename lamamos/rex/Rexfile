@@ -441,7 +441,7 @@ sub secondPartInstall {
 
 
 
-  Service::drbd:finalConfig();
+  Service::drbd::finalConfig();
 
 
 
