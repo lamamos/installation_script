@@ -167,6 +167,34 @@ sub installBaseSysteme {
     `/etc/init.d/corosync stop`;
 
     `shutdown -r 1`;
+  }elsif($CFG::config{'OCFS2Init'} == "2"){
+
+    secondPartInstall();
+		$CFG::config{'OCFS2Init'} = "3";
+  	writeCfg('/etc/lamamos/lamamos.conf');
+
+
+    `/etc/init.d/pacemaker start`;
+    while(!isPacemakerRunning()){
+
+		  print("We are waitting for pacemakert to start\n");
+      sleep(2);
+    };
+
+    #hugly as hell, we need to wait for pacemaker to finish to start
+    sleep(15);
+
+    if($CFG::hostName eq $CFG::config{'firstServHostName'}){
+
+      #put the nodes in standby mode (for reboot)
+      sleep(5);
+      `crm node online serveur1`;
+      sleep(5);
+      `crm node online serveur2`;
+      sleep(5);
+      `crm configure property maintenance-mode=false`;
+    }
+
   }
 
 
