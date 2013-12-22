@@ -151,6 +151,8 @@ sub installBaseSysteme {
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
     secondPartInstall();
+		$CFG::config{'OCFS2Init'} = "2";
+  	writeCfg('/etc/lamamos/lamamos.conf');
   }
 
 
