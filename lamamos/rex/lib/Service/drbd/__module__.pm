@@ -181,7 +181,7 @@ sub finalConfig {
         $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
         file "/etc/drbd.conf",
-                content         => template("templates/drbd_install_2.conf.tpl", variables => $variables),
+                content         => template("templates/drbd.conf.tpl", variables => $variables),
                 owner           => "root",
                 group           => "root",
                 mode            => "640";
