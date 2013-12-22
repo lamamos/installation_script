@@ -143,7 +143,10 @@ sub installBaseSysteme {
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
 
-    `shutdown -r now`;
+    `/etc/init.d/pacemaker stop`;
+    `/etc/init.d/corosync stop`;
+
+    `shutdown -r 5`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -435,18 +438,6 @@ sub isPacemakerRunning {
     return TRUE;
   }
 }
-
-
-
-task "reboot", group => martobre, sub{
-
-
-
-  rex-reboot;
-
-
-}
-
 
 
 
