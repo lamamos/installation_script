@@ -146,7 +146,7 @@ sub installBaseSysteme {
     `/etc/init.d/pacemaker stop`;
     `/etc/init.d/corosync stop`;
 
-    `shutdown -r 5`;
+    `shutdown -r 1`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -335,7 +335,10 @@ sub firstPartInstall {
     });
 
 
-	} #end of the if firstServer
+	}else{  #if we are the second server
+
+    sleep(3);
+  } #end of the if firstServer
 
 }
 
