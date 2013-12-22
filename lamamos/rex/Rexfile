@@ -418,6 +418,11 @@ sub secondPartInstall {
     });
 =cut
 
+  }else{  #second server
+
+    #ugly as hell, need to wait for drbd to boot
+    sleep(25);
+    `drbdadm primary all`;
   }
 
   #(need to change the split brain management)
