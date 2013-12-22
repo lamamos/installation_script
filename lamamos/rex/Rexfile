@@ -213,6 +213,8 @@ sub firstPartInstall {
 		sleep(3);	
 	}
 
+  #ugly as hell, we wait for the two server to detet that they are connected
+	sleep(5);	
 
   #we now define the first serveur as primari (needed for the first synchronisation)
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
