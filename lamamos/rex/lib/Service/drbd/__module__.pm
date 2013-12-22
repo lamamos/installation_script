@@ -96,7 +96,7 @@ sub installSystem {
         $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
         file "/etc/drbd.conf",
-                content         => template("templates/drbd.conf.tpl", variables => $variables),
+                content         => template("templates/drbd_install_2.conf.tpl", variables => $variables),
                 owner           => "root",
                 group           => "root",
                 mode            => "640";
@@ -166,6 +166,26 @@ sub areTwoServSync {
 
                 return FALSE;
         }
+}
+
+
+
+sub finalConfig {
+
+        my $variables = {};
+        $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
+        $variables->{'ddName'} = $CFG::config{'ddName'};
+        $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+
+        file "/etc/drbd.conf",
+                content         => template("templates/drbd_install_2.conf.tpl", variables => $variables),
+                owner           => "root",
+                group           => "root",
+                mode            => "640";
+
 }
 
 

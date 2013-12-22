@@ -153,6 +153,20 @@ sub installBaseSysteme {
     secondPartInstall();
 		$CFG::config{'OCFS2Init'} = "2";
   	writeCfg('/etc/lamamos/lamamos.conf');
+
+
+    #put the nodes in standby mode (for reboot)
+    `crm node standby serveur1`;
+    `crm node standby serveur2`;
+    `crm configure property maintenance-mode=true`;
+
+    #ugly as hell, need to wait for the modifs in pacemaker to take effect
+    sleep(10);
+
+    `/etc/init.d/pacemaker stop`;
+    `/etc/init.d/corosync stop`;
+
+    `shutdown -r 1`;
   }
 
 
@@ -427,7 +441,7 @@ sub secondPartInstall {
 
 
 
-
+  Service::drbd:finalConfig();
 
 
 
