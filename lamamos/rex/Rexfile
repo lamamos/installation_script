@@ -461,7 +461,7 @@ sub secondPartInstall {
   }else{  #second server
 
     #ugly as hell, need to wait for drbd to boot
-    sleep(25);
+    sleep(35);
     `drbdadm primary all`;
   }
 
