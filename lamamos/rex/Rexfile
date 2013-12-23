@@ -169,10 +169,8 @@ sub installBaseSysteme {
     `shutdown -r 1`;
   }elsif($CFG::config{'OCFS2Init'} == "2"){
 
-    secondPartInstall();
 		$CFG::config{'OCFS2Init'} = "3";
   	writeCfg('/etc/lamamos/lamamos.conf');
-
 
     `/etc/init.d/pacemaker start`;
     while(!isPacemakerRunning()){
