@@ -105,14 +105,14 @@ task "configure", group => martobre, sub{
 
 sub areTwoServConnectedToPacemaker {
 
-        my $status1 = `crm node show | grep \"$CFG::config{'firstServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
-        my $status2 = `crm node show | grep \"$CFG::config{'SeconServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
+  my $status1 = `crm node show | grep \"$CFG::config{'firstServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
+  my $status2 = `crm node show | grep \"$CFG::config{'SeconServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
 
-        if( ($status1 eq "normal\n") && ($status2 eq "normal\n") ){
+  if( ($status1 eq "normal\n") && ($status2 eq "normal\n") ){
 
-                #the two servers are connected
+    #the two servers are connected
 		return TRUE;
-        }else{
+  }else{
 
 		return FALSE;
 	}
@@ -469,10 +469,7 @@ sub secondPartInstall {
 
 
 
-  Service::drbd::finalConfig();
-
-
-
+  #Service::drbd::finalConfig();
 
   #(need to change the split brain management)
 
