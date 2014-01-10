@@ -80,21 +80,21 @@ task stop => sub{
 
 
 
-sub sendState{
-
-  my $module = $_[0];
-  my $state = $_[1];
-
-  my $sock = new IO::Socket::INET (
-    PeerAddr => $otherServIP,
-    PeerPort => '7070',
-    Proto => 'tcp',
-  );
-  die "Could not create socket: $!\n" unless $sock;
-
-  print $sock $module."\|".$state;
-  close($sock);
-};
+#sub sendState{
+#
+#  my $module = $_[0];
+#  my $state = $_[1];
+#
+#  my $sock = new IO::Socket::INET (
+#    PeerAddr => $otherServIP,
+#    PeerPort => '7070',
+#    Proto => 'tcp',
+#  );
+#  die "Could not create socket: $!\n" unless $sock;
+#
+#  print $sock $module."\|".$state;
+#  close($sock);
+#};
 
 
 
