@@ -62,19 +62,19 @@ task stop => sub{
 
 
 
-task waitOtherServ => sub {
-
-  my $module = $_[0];
-  my $state = $_[1];
-
-  sendState($module, $state);
-
-  #would be better to use some sort of a signal
-  while( !(($otherServModule eq $module) && ($otherServState == $state)) ){
-
-    sleep(1);
-  };
-};
+#task waitOtherServ => sub {
+#
+#  my $module = $_[0];
+#  my $state = $_[1];
+#
+#  sendState($module, $state);
+#
+#  #would be better to use some sort of a signal
+#  while( !(($otherServModule eq $module) && ($otherServState == $state)) ){
+#
+#    sleep(1);
+#  };
+#};
 
 
 
