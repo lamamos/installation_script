@@ -6,6 +6,7 @@ use IO::Socket;
 use threads;
 use threads::shared;
 
+my $localIP = '';
 my $otherServIP = '';
 
 my $otherServModule = "";
@@ -31,7 +32,7 @@ task start => sub {
 
     #the socket that is used on this server to listen
     $sock = new IO::Socket::INET (
-      LocalHost => '127.0.0.1',
+      LocalHost => $localIP,
       LocalPort => '7070',
       Proto => 'tcp',
       Listen => 1,
@@ -72,8 +73,8 @@ task waitOtherServ => sub {
 
 sub initialise{
 
-  if($CFG::hostName eq $CFG::config{'firstServHostName'}){$otherServIP = $CFG::config{'SeconServIP'}}
-  else{$otherServIP = $CFG::config{'firstServIP'}}
+  if($CFG::hostName eq $CFG::config{'firstServHostName'}){$otherServIP = $CFG::config{'SeconServIP'}; $localIP = $CFG::config{'firstServIP'};}
+  else{$otherServIP = $CFG::config{'firstServIP'}; $localIP = $CFG::config{'SeconServIP'};}
 
   #we share the variable across the threads
   share($otherServModule);
@@ -89,6 +90,8 @@ sub sendState{
 
   my $module = $_[0];
   my $state = $_[1];
+
+        print $otherServIP;
 
   my $sock = new IO::Socket::INET (
     PeerAddr => $otherServIP,
