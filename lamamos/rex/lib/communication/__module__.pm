@@ -9,8 +9,12 @@ use threads::shared;
 my $localIP = '';
 my $otherServIP = '';
 
+my $localModule = "";
+my $localState = 0;
+
 my $otherServModule = "";
 my $otherServState = 0;
+my $otherServUp = 1;	#we consider that the other serv is awake and running
 
 #variable that is used for the socket
 my $sock;
@@ -58,13 +62,13 @@ task stop => sub {
 
 task waitOtherServ => sub {
 
-  my $module = $_[0];
-  my $state = $_[1];
+  $localModule = $_[0];
+  $localState = $_[1];
 
-  sendState($module, $state);
+  sendState($localModule, $localState);
 
   #would be better to use some sort of a signal
-  while( !(($otherServModule eq $module) && ($otherServState == $state)) ){
+  while( !(($otherServModule eq $localModule,) && ($otherServState == $localState)) ){
 
     sleep(1);
   };
@@ -80,6 +84,8 @@ sub initialise{
   share($otherServModule);
   share($otherServState);
 
+  share($localModule);
+  share($localState);
 };
 
 
@@ -96,7 +102,11 @@ sub sendState{
     PeerPort => '7070',
     Proto => 'tcp',
   );
-  die "Could not create socket: $!\n" unless $sock;
+  if(!$sock){
+    $otherServUp = 0;
+    return 0;
+  }
+  #die "Could not create socket: $!\n" unless $sock;
 
   print $sock $module."\|".$state;
   close($sock);
@@ -118,6 +128,13 @@ sub listener{
       $otherServModule = @values[0];
       $otherServState = @values[1];
       print "The other serv is in the state ".$otherServState." in the : ".$otherServModule." module.\n";
+
+      #if the other serv was down befor we send back our state
+      if(!$otherServUp){
+
+        sendState($localModule, $localState);
+        $otherServUp = 1;
+      }
     }
   }
 };
