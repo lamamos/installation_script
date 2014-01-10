@@ -49,6 +49,9 @@ task start => sub {
 
   });
 
+  #we sleep 1s to wait for the sthread to be created
+  sleep(1);
+
 };
 
 
