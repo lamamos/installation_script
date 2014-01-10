@@ -18,6 +18,7 @@ my $otherServState = 0;
 
 #variable that is used for the socket
 my $sock;
+my $thr;
 
 #we share the variable across the threads
 share($otherServModule);
@@ -30,7 +31,7 @@ share($otherServState);
 task start => sub {
 
   #definition of the listening thread
-  my $thr = threads->create(sub {
+  $thr = threads->create(sub {
 
     #definition of the sig handlers
     $SIG{'KILL'} = sub { close($sock); threads->exit(); };
