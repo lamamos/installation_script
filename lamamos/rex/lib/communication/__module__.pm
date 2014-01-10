@@ -6,7 +6,6 @@ use IO::Socket;
 use threads;
 use threads::shared;
 
-
 my $numServer = $ARGV[0];
 my $port = 7070;
 my $otherServIP = '';
@@ -40,7 +39,7 @@ task start => sub {
     #the socket that is used on this server to listen
     $sock = new IO::Socket::INET (
       LocalHost => '127.0.0.1',
-      LocalPort => $port,
+      LocalPort => '7070',
       Proto => 'tcp',
       Listen => 1,
       Reuse => 1,
@@ -51,14 +50,15 @@ task start => sub {
     listener();
 
   });
+
 };
 
 
-task stop => sub{
+task stop => sub {
 
   #we kill the listening thread
   $thr->kill('KILL')->detach();
-}
+};
 
 
 
