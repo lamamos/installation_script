@@ -83,6 +83,7 @@ sub initialise{
   #we share the variable across the threads
   share($otherServModule);
   share($otherServState);
+  share($otherServUp);
 
   share($localModule);
   share($localState);
@@ -128,6 +129,7 @@ sub listener{
       $otherServModule = @values[0];
       $otherServState = @values[1];
       print "The other serv is in the state ".$otherServState." in the : ".$otherServModule." module.\n";
+
 
       #if the other serv was down befor we send back our state
       if(!$otherServUp){
