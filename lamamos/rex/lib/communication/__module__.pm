@@ -91,8 +91,6 @@ sub sendState{
   my $module = $_[0];
   my $state = $_[1];
 
-        print $otherServIP;
-
   my $sock = new IO::Socket::INET (
     PeerAddr => $otherServIP,
     PeerPort => '7070',
@@ -119,7 +117,7 @@ sub listener{
 
       $otherServModule = @values[0];
       $otherServState = @values[1];
-      print "L'autre serveur est en etat ".$otherServState." sur le module : ".$otherServModule."\n";
+      print "The other serv is in the state ".$otherServState." in the : ".$otherServModule." module.\n";
     }
   }
 };

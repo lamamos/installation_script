@@ -53,7 +53,7 @@ task "configure", group => martobre, sub{
   #we start the socket server
   communication::start();
   #we sleep 1 to wait for the sthread to be created
-  sleep(1);
+  sleep(5);
 
   communication::waitOtherServ('test', 1);
 
