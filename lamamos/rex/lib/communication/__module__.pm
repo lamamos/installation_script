@@ -53,6 +53,13 @@ task start => sub {
 };
 
 
+task stop => sub{
+
+  #we kill the listening thread
+  $thr->kill('KILL')->detach();
+}
+
+
 
 task waitOtherServ => sub {
 

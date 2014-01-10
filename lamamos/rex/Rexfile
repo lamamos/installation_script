@@ -102,6 +102,10 @@ task "configure", group => martobre, sub{
 =cut
 
 
+
+  #we stop the socket server
+  communication::stop();
+
 	#print $CFG::config{'OCFS2Init'};
 	writeCfg('/etc/lamamos/lamamos.conf');
 
