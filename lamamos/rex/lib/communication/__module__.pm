@@ -90,8 +90,6 @@ sub sendState{
   my $module = $_[0];
   my $state = $_[1];
 
-	print $otherServIP;
-
   my $sock = new IO::Socket::INET (
     PeerAddr => $otherServIP,
     PeerPort => '7070',
