@@ -55,6 +55,12 @@ task "configure", group => martobre, sub{
   #we sleep 1 to wait for the sthread to be created
   sleep(1);
 
+  communication::waitOtherServ('test', 1);
+
+
+
+
+
   #installBaseSysteme();
 
 =pod

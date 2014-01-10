@@ -6,11 +6,7 @@ use IO::Socket;
 use threads;
 use threads::shared;
 
-my $numServer = $ARGV[0];
-my $port = 7070;
 my $otherServIP = '';
-if($CFG::hostName eq $CFG::config{'firstServHostName'}){$otherServIP = $CFG::config{'SeconServIP'}}
-else{$otherServIP = $CFG::config{'firstServIP'}}
 
 my $otherServModule = "";
 my $otherServState = 0;
@@ -19,15 +15,12 @@ my $otherServState = 0;
 my $sock;
 my $thr;
 
-#we share the variable across the threads
-share($otherServModule);
-share($otherServState);
-
-
 
 
 
 task start => sub {
+
+  initialise();
 
   #definition of the listening thread
   $thr = threads->create(sub {
@@ -62,39 +55,53 @@ task stop => sub {
 
 
 
-#task waitOtherServ => sub {
-#
-#  my $module = $_[0];
-#  my $state = $_[1];
-#
-#  sendState($module, $state);
-#
-#  #would be better to use some sort of a signal
-#  while( !(($otherServModule eq $module) && ($otherServState == $state)) ){
-#
-#    sleep(1);
-#  };
-#};
+task waitOtherServ => sub {
+
+  my $module = $_[0];
+  my $state = $_[1];
+
+  sendState($module, $state);
+
+  #would be better to use some sort of a signal
+  while( !(($otherServModule eq $module) && ($otherServState == $state)) ){
+
+    sleep(1);
+  };
+};
+
+
+sub initialise{
+
+  if($CFG::hostName eq $CFG::config{'firstServHostName'}){$otherServIP = $CFG::config{'SeconServIP'}}
+  else{$otherServIP = $CFG::config{'firstServIP'}}
+
+  #we share the variable across the threads
+  share($otherServModule);
+  share($otherServState);
+
+};
 
 
 
 
 
-#sub sendState{
-#
-#  my $module = $_[0];
-#  my $state = $_[1];
-#
-#  my $sock = new IO::Socket::INET (
-#    PeerAddr => $otherServIP,
-#    PeerPort => '7070',
-#    Proto => 'tcp',
-#  );
-#  die "Could not create socket: $!\n" unless $sock;
-#
-#  print $sock $module."\|".$state;
-#  close($sock);
-#};
+sub sendState{
+
+  my $module = $_[0];
+  my $state = $_[1];
+
+	print $otherServIP;
+
+  my $sock = new IO::Socket::INET (
+    PeerAddr => $otherServIP,
+    PeerPort => '7070',
+    Proto => 'tcp',
+  );
+  die "Could not create socket: $!\n" unless $sock;
+
+  print $sock $module."\|".$state;
+  close($sock);
+};
 
 
 
