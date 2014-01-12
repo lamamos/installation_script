@@ -92,7 +92,18 @@ sub areTwoServConnectedToPacemaker {
 	}
 }
 
+sub isPacemakerRunning {
 
+  my $status = `/etc/init.d/drbd status | grep \"is running...\" | wc -l`;
+
+  if($status eq "0"){
+
+    return FALSE;
+  }else{
+
+    return TRUE;
+  }
+}
 
 
 

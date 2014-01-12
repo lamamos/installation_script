@@ -174,7 +174,7 @@ sub installBaseSysteme {
   	writeCfg('/etc/lamamos/lamamos.conf');
 
     `/etc/init.d/pacemaker start`;
-    while(!isPacemakerRunning()){
+    while(!Service::pacemaker::isPacemakerRunning()){
 
 		  print("We are waitting for pacemakert to start\n");
       sleep(2);
@@ -393,7 +393,7 @@ sub firstPartInstall {
 sub secondPartInstall {
 
   `/etc/init.d/pacemaker start`;
-  while(!isPacemakerRunning()){
+  while(!Service::pacemaker::isPacemakerRunning()){
 
 		print("We are waitting for pacemakert to start\n");
     sleep(2);
@@ -477,23 +477,6 @@ sub secondPartInstall {
 
 
 
-
-
-
-
-#TODO : move this function in the pacemaker service
-sub isPacemakerRunning {
-
-  my $status = `/etc/init.d/drbd status | grep \"is running...\" | wc -l`;
-
-  if($status eq "0"){
-
-    return FALSE;
-  }else{
-
-    return TRUE;
-  }
-}
 
 
 
