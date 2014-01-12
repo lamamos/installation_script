@@ -117,21 +117,7 @@ task "configure", group => martobre, sub{
 
 
 
-#TODO : move this function in the pacemaker service
-sub areTwoServConnectedToPacemaker {
 
-  my $status1 = `crm node show | grep \"$CFG::config{'firstServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
-  my $status2 = `crm node show | grep \"$CFG::config{'SeconServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
-
-  if( ($status1 eq "normal\n") && ($status2 eq "normal\n") ){
-
-    #the two servers are connected
-		return TRUE;
-  }else{
-
-		return FALSE;
-	}
-}
 
 
 
@@ -263,13 +249,15 @@ sub firstPartInstall {
   });
 
   #TODO : make this a function in the drbd service
-	#need to wait for the two servers to be connected
-	while(!areTwoServConnectedToPacemaker()){
+  Service::pacemaker::waitForTwoServToConnect();
 
-		#the two servers are connected
-		print "We are waitting for the two servers to connect.\n";
-		sleep(3);	
-	}
+	#need to wait for the two servers to be connected
+#	while(!areTwoServConnectedToPacemaker()){
+#
+#		#the two servers are connected
+#		print "We are waitting for the two servers to connect.\n";
+#		sleep(3);	
+#	}
 
   #ugly as hell, we wait for the two server to detet that they are connected
 	sleep(5);	

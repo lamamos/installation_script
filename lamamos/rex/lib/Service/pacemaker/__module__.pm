@@ -64,6 +64,38 @@ task define => sub {
 
 };
 
+
+
+sub waitForTwoServToConnect{
+
+  while(!areTwoServConnectedToPacemaker()){
+
+	  #the two servers are connected
+	  print "We are waitting for the two servers to connect to pacemaker.\n";
+	  sleep(3);	
+  }
+};
+
+
+sub areTwoServConnectedToPacemaker {
+
+  my $status1 = `crm node show | grep \"$CFG::config{'firstServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
+  my $status2 = `crm node show | grep \"$CFG::config{'SeconServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
+
+  if( ($status1 eq "normal\n") && ($status2 eq "normal\n") ){
+
+    #the two servers are connected
+		return TRUE;
+  }else{
+
+		return FALSE;
+	}
+}
+
+
+
+
+
 1;
 
 =pod
