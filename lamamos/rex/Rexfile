@@ -248,16 +248,8 @@ sub firstPartInstall {
     'version' => '1',
   });
 
-  #TODO : make this a function in the drbd service
+  #TODO : check this works fine
   Service::pacemaker::waitForTwoServToConnect();
-
-	#need to wait for the two servers to be connected
-#	while(!areTwoServConnectedToPacemaker()){
-#
-#		#the two servers are connected
-#		print "We are waitting for the two servers to connect.\n";
-#		sleep(3);	
-#	}
 
   #ugly as hell, we wait for the two server to detet that they are connected
 	sleep(5);	
