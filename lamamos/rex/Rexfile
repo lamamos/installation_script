@@ -376,12 +376,8 @@ sub firstPartInstall {
 
 
 	}
-#else{  #if we are the second server
-#
-#    #TODO : change that into a wait socket after the if.
-#    sleep(3);
-#  } #end of the if firstServer
 
+  #TODO : check if this works fine
   communication::waitOtherServ('firstInstall', 1);
 
 }
@@ -412,13 +408,19 @@ sub secondPartInstall {
     sleep(5);
     `crm configure property maintenance-mode=false`;
 
-
     #need to wait for drbd to be launched
     #ugly as hell, but should be fine for now (to wait for drbd to start)
     sleep(10);
+  }
 
-    `drbdadm primary all`;
-    sleep(10);
+  communication::waitOtherServ('secondInstall', 1);
+
+  #Now that drbd is launched we configure every serv into primary mode
+  `drbdadm primary all`;
+  sleep(10);  #wait for the config to take effect
+
+
+  if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     `tunefs.ocfs2 --yes --update-cluster-stack /dev/drbd0`;
 
@@ -456,22 +458,14 @@ sub secondPartInstall {
       'first' => 'cloneO2CB',
       'second' => 'cl_fs_ocfs2:start',
     });
-
-
-  }else{  #second server
-
-    #TODO : Use a wait socket for that.
-    #TODO : cut this config in tree parts : the launching of pacemake. The drbd primary. The config on pacemaker.
-    #ugly as hell, need to wait for drbd to boot
-    sleep(35);
-    `drbdadm primary all`;
   }
 
-
+  #TODO : check that it works fine
+  communication::waitOtherServ('secondInstall', 2);
 
   #Service::drbd::finalConfig();
 
-  #(need to change the split brain management)
+  #TODO : (need to change the split brain management)
 
 }
 
