@@ -117,7 +117,7 @@ task "configure", group => martobre, sub{
 
 
 
-
+#TODO : move this function in the pacemaker service
 sub areTwoServConnectedToPacemaker {
 
   my $status1 = `crm node show | grep \"$CFG::config{'firstServHostName'}\" | cut --delimiter=":" -f2 | sed 's/ //g'`;
@@ -249,19 +249,20 @@ sub firstPartInstall {
 	
   Service::pacemaker::define({
 
-    'enable_secauth'        => 1,
-    'authkey_path'                => '/etc/corosync/authkey',
-    'bind_address'                => '192.168.56.0',
-    'multicast_address'        => '226.99.5.1',
+    'enable_secauth'    => 1,
+    'authkey_path'      => '/etc/corosync/authkey',
+    'bind_address'      => '192.168.56.0',
+    'multicast_address' => '226.99.5.1',
   });
 
 
   Service::pacemaker::service::define({
 
-    'name'                => 'pacemaker',
-    'version'        => '1',
+    'name'    => 'pacemaker',
+    'version' => '1',
   });
 
+  #TODO : make this a function in the drbd service
 	#need to wait for the two servers to be connected
 	while(!areTwoServConnectedToPacemaker()){
 
@@ -273,10 +274,10 @@ sub firstPartInstall {
   #ugly as hell, we wait for the two server to detet that they are connected
 	sleep(5);	
 
+
+
   #we now define the first serveur as primari (needed for the first synchronisation)
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
-
-
 
     Service::pacemaker::property::define({
 
@@ -396,6 +397,7 @@ sub firstPartInstall {
 
 	}else{  #if we are the second server
 
+    #TODO : change that into a wait socket after the if.
     sleep(3);
   } #end of the if firstServer
 
@@ -419,7 +421,7 @@ sub secondPartInstall {
 
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
-    #put the nodes in standby mode (for reboot)
+    #put the nodes in online mode (because of the reboot)
     sleep(5);
     `crm node online serveur1`;
     sleep(5);
@@ -475,6 +477,8 @@ sub secondPartInstall {
 
   }else{  #second server
 
+    #TODO : Use a wait socket for that.
+    #TODO : cut this config in tree parts : the launching of pacemake. The drbd primary. The config on pacemaker.
     #ugly as hell, need to wait for drbd to boot
     sleep(35);
     `drbdadm primary all`;
@@ -494,7 +498,7 @@ sub secondPartInstall {
 
 
 
-
+#TODO : move this function in the pacemaker service
 sub isPacemakerRunning {
 
   my $status = `/etc/init.d/drbd status | grep \"is running...\" | wc -l`;
