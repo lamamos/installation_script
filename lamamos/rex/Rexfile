@@ -375,11 +375,14 @@ sub firstPartInstall {
     });
 
 
-	}else{  #if we are the second server
+	}
+#else{  #if we are the second server
+#
+#    #TODO : change that into a wait socket after the if.
+#    sleep(3);
+#  } #end of the if firstServer
 
-    #TODO : change that into a wait socket after the if.
-    sleep(3);
-  } #end of the if firstServer
+  communication::waitOtherServ('firstInstall', 1);
 
 }
 
