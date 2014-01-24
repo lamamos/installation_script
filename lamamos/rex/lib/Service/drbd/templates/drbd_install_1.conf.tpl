@@ -20,7 +20,7 @@ resource r0 {
 	net{
 
 		#we don't allow two primaries for the begining of the installation
-		#allow-two-primaries yes;
+		#allow-two-primaries;
 
 
 		#si la connection est idle on attendra ping-int secondes avant d envoyer un packet keep-alive
