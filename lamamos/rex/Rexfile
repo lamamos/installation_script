@@ -59,7 +59,7 @@ task "configure", group => martobre, sub{
 
 
 
-  #installBaseSysteme();
+  installBaseSysteme();
 
 =pod
 
