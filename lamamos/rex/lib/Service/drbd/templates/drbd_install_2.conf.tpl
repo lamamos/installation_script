@@ -19,7 +19,7 @@ resource r0 {
 
 	net{
 
-		allow-two-primaries yes;
+		allow-two-primaries;
 
 
 		#si la connection est idle on attendra ping-int secondes avant d envoyer un packet keep-alive
