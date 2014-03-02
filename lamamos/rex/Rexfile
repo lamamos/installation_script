@@ -137,8 +137,8 @@ sub installBaseSysteme {
 
 
     #put the nodes in standby mode (for reboot)
-    `crm node standby serveur1`;
-    `crm node standby serveur2`;
+    `crm node standby server1`;
+    `crm node standby server2`;
     `crm configure property maintenance-mode=true`;
 
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
@@ -157,8 +157,8 @@ sub installBaseSysteme {
 
 
     #put the nodes in standby mode (for reboot)
-    `crm node standby serveur1`;
-    `crm node standby serveur2`;
+    `crm node standby server1`;
+    `crm node standby server2`;
     `crm configure property maintenance-mode=true`;
 
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
@@ -176,7 +176,7 @@ sub installBaseSysteme {
     `/etc/init.d/pacemaker start`;
     while(!Service::pacemaker::isPacemakerRunning()){
 
-		  print("We are waitting for pacemakert to start\n");
+      print("We are waitting for pacemakert to start\n");
       sleep(2);
     };
 
@@ -195,7 +195,6 @@ sub installBaseSysteme {
     }
 
   }
-
 
 }
 
