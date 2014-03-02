@@ -123,11 +123,18 @@ sub installSystem {
 	#install 'ocfs2-tools';
         install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
 
+
+  communication::waitOtherServ('drbd', 1);
+
 	#we format the media in OCFS2. The first server is the one that does it.
         if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
                 `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
         }
+
+  communication::waitOtherServ('drbd', 2);
+
+
 
         $variables = {};
         $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
