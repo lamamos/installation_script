@@ -22,7 +22,7 @@ task define => sub {
   $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
   file "/etc/drbd.conf",
-    content 	=> template("templates/drbd.conf.tpl", variables => $variables),
+    content 	=> template("templates/drbd_install_2.conf.tpl", variables => $variables),
     owner		=> "root",
     group		=> "root",
     mode		=> "640",
@@ -105,17 +105,6 @@ sub installSystem {
                 group           => "root",
                 mode            => "640";
 
-
-
-
-
-	#TODO : start to not work around here
-
-
-
-
-
-
 	#we restart the drbd deamon
 	`/etc/init.d/drbd restart`;
 
@@ -124,17 +113,11 @@ sub installSystem {
         install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
 
 
-  communication::waitOtherServ('drbd', 1);
-
 	#we format the media in OCFS2. The first server is the one that does it.
         if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
                 `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
         }
-
-  communication::waitOtherServ('drbd', 2);
-
-
 
         $variables = {};
         $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
