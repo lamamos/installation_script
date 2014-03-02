@@ -136,18 +136,18 @@ sub installBaseSysteme {
     writeCfg('/etc/lamamos/lamamos.conf');
 
 
-    #put the nodes in standby mode (for reboot)
-    `crm node standby serveur1`;
-    `crm node standby serveur2`;
-    `crm configure property maintenance-mode=true`;
-
-    #ugly as hell, need to wait for the modifs in pacemaker to take effect
+#    #put the nodes in standby mode (for reboot)
+#    `crm node standby serveur1`;
+#    `crm node standby serveur2`;
+#    `crm configure property maintenance-mode=true`;
+#
+#    #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
 
-    `/etc/init.d/pacemaker stop`;
-    `/etc/init.d/corosync stop`;
+#    `/etc/init.d/pacemaker stop`;
+#    `/etc/init.d/corosync stop`;
 
-    `shutdown -r 1`;
+#    `shutdown -r 1`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
@@ -215,44 +215,46 @@ sub installBaseSysteme {
 
 sub firstPartInstall {
 
-	#install drbd
+  #install drbd
   Service::drbd::define();
 
 
 
-	#folder for the shared hard drives
-  mkdir "/data",
-    owner   => "root",
-    group   => "root",
-    mode    => 755;
+=pod
+
+
+#  #folder for the shared hard drives
+#  mkdir "/data",
+#    owner   => "root",
+#    group   => "root",
+#    mode    => 755;
 
 
 
 
 
 
-	#pacemaker
-	
-  Service::pacemaker::define({
+#  #pacemaker	
+#  Service::pacemaker::define({
+#
+#    'enable_secauth'    => 1,
+#    'authkey_path'      => '/etc/corosync/authkey',
+#    'bind_address'      => '192.168.56.0',
+#    'multicast_address' => '226.99.5.1',
+#  });
 
-    'enable_secauth'    => 1,
-    'authkey_path'      => '/etc/corosync/authkey',
-    'bind_address'      => '192.168.56.0',
-    'multicast_address' => '226.99.5.1',
-  });
 
+#  Service::pacemaker::service::define({
+#
+#    'name'    => 'pacemaker',
+#    'version' => '1',
+#  });
 
-  Service::pacemaker::service::define({
-
-    'name'    => 'pacemaker',
-    'version' => '1',
-  });
-
-  #TODO : check this works fine
-  Service::pacemaker::waitForTwoServToConnect();
+#  #TODO : check this works fine
+#  Service::pacemaker::waitForTwoServToConnect();
 
   #ugly as hell, we wait for the two server to detet that they are connected
-	sleep(5);	
+  sleep(5);	
 
 
 
@@ -375,10 +377,14 @@ sub firstPartInstall {
     });
 
 
-	}
+  }
+
+
+=cut
 
   #TODO : check if this works fine
   communication::waitOtherServ('firstInstall', 1);
+
 
 }
 
