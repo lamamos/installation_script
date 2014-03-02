@@ -87,7 +87,7 @@ sub installSystem {
 	`/etc/init.d/drbd stop`;
 
 	#we configure drbd (last config)
-        my $variables = {};
+        $variables = {};
         $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
         $variables->{'ddName'} = $CFG::config{'ddName'};
         $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
@@ -114,7 +114,7 @@ sub installSystem {
                 `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
         }
 
-        my $variables = {};
+        $variables = {};
         $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
         $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
         $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};

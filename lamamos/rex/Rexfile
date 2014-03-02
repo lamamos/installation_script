@@ -38,15 +38,15 @@ require Service::pacemaker::location;
 
 task "configure", group => martobre, sub{
 
-	if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
-	    print(STDERR $err, "\n");
-	    exit(1);
-	}
+  if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
+    print(STDERR $err, "\n");
+    exit(1);
+  }
 
-	$CFG::hostName = getHostName();
+  $CFG::hostName = getHostName();
 
-	#now the config hash is in : $CFG::config{'varName'};
-	#print $CFG::config{'ddName'}."\n";
+  #now the config hash is in : $CFG::config{'varName'};
+  #print $CFG::config{'ddName'}."\n";
 
 
 
@@ -63,17 +63,17 @@ task "configure", group => martobre, sub{
 
 =pod
 
-	#Install the NTP server
-        Service::ntp::define();
+  #Install the NTP server
+  Service::ntp::define();
 
 
-	#define the DNS to use
-        Service::resolver::define({
+  #define the DNS to use
+  Service::resolver::define({
 
-                'domain_name'        => 'testounet.fr',
-                'search_path'        => ['testounet.fr'],
-                'name_servers'       => ['208.67.222.222', '208.67.220.220'],
-        });
+    'domain_name'        => 'testounet.fr',
+    'search_path'        => ['testounet.fr'],
+    'name_servers'       => ['208.67.222.222', '208.67.220.220'],
+  });
 
 
 
@@ -129,11 +129,11 @@ task "configure", group => martobre, sub{
 sub installBaseSysteme {
 
 
-	if($CFG::config{'OCFS2Init'} == "0"){
+  if($CFG::config{'OCFS2Init'} == "0"){
 
     firstPartInstall();
-		$CFG::config{'OCFS2Init'} = "1";
-  	writeCfg('/etc/lamamos/lamamos.conf');
+    $CFG::config{'OCFS2Init'} = "1";
+    writeCfg('/etc/lamamos/lamamos.conf');
 
 
     #put the nodes in standby mode (for reboot)
@@ -152,8 +152,8 @@ sub installBaseSysteme {
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
     secondPartInstall();
-		$CFG::config{'OCFS2Init'} = "2";
-  	writeCfg('/etc/lamamos/lamamos.conf');
+    $CFG::config{'OCFS2Init'} = "2";
+    writeCfg('/etc/lamamos/lamamos.conf');
 
 
     #put the nodes in standby mode (for reboot)
@@ -170,8 +170,8 @@ sub installBaseSysteme {
     #`shutdown -r 1`;
   }elsif($CFG::config{'OCFS2Init'} == "2"){
 
-		$CFG::config{'OCFS2Init'} = "3";
-  	writeCfg('/etc/lamamos/lamamos.conf');
+    $CFG::config{'OCFS2Init'} = "3";
+    writeCfg('/etc/lamamos/lamamos.conf');
 
     `/etc/init.d/pacemaker start`;
     while(!Service::pacemaker::isPacemakerRunning()){
