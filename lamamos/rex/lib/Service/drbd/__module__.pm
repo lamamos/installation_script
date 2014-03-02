@@ -119,6 +119,8 @@ sub installSystem {
                 `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
         }
 
+  communication::waitOtherServ('drbd', 1);
+
         $variables = {};
         $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
         $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
