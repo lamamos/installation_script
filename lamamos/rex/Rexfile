@@ -386,6 +386,12 @@ sub firstPartInstall {
 
 sub secondPartInstall {
 
+  communication::waitOtherServ('secondInstall', 0);
+
+  `/etc/init.d/drbd start`
+  #Ugly, should be waitting for the two node to be synchronised
+  sleep(15);
+
   `/etc/init.d/pacemaker start`;
   while(!Service::pacemaker::isPacemakerRunning()){
 
