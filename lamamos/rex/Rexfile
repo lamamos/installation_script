@@ -77,31 +77,31 @@ task "configure", group => martobre, sub{
 
 
 
-	#install the web server
-        Service::apache::define();
+  #install the web server
+  Service::apache::define();
 
-	#install php
-	Service::apache::php::define();
+  #install php
+  Service::apache::php::define();
 
-	#create a vhost for the admin panel
-        Service::apache::vhost::define({
+  #create a vhost for the admin panel
+  Service::apache::vhost::define({
 
-		'file_name'     => 'adminPannel',
-                'server_name'   => 'www.testounet.fr',
-                'port'          => 80,
-                'server_admin'  => 'karlito@martobre.fr',
-                'docroot'       => '/etc/lamamos/admin_panel/',
-                'docroot_owner' => 'www-data',
-                'docroot_group' => 'www-data',
-                'ssl'           => 0,
-        });
+    'file_name'     => 'adminPannel',
+    'server_name'   => 'www.testounet.fr',
+    'port'          => 80,
+    'server_admin'  => 'karlito@martobre.fr',
+    'docroot'       => '/etc/lamamos/admin_panel/',
+    'docroot_owner' => 'www-data',
+    'docroot_group' => 'www-data',
+    'ssl'           => 0,
+  });
 
 
-	#install the admin pannel
-	Service::lamadmin::define({
+  #install the admin pannel
+  Service::lamadmin::define({
 
-		'install_path' => '/etc/lamamos/admin_panel/',
-	});
+    'install_path' => '/etc/lamamos/admin_panel/',
+  });
 
 =cut
 
@@ -187,9 +187,9 @@ sub installBaseSysteme {
 
       #put the nodes in standby mode (for reboot)
       sleep(5);
-      `crm node online serveur1`;
+      `crm node online server1`;
       sleep(5);
-      `crm node online serveur2`;
+      `crm node online server2`;
       sleep(5);
       `crm configure property maintenance-mode=false`;
     }
@@ -253,7 +253,7 @@ sub firstPartInstall {
 
 
 
-  #we now define the first serveur as primari (needed for the first synchronisation)
+  #we now define the first server as primari (needed for the first synchronisation)
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     Service::pacemaker::property::define({
@@ -389,7 +389,7 @@ sub secondPartInstall {
   `/etc/init.d/pacemaker start`;
   while(!Service::pacemaker::isPacemakerRunning()){
 
-		print("We are waitting for pacemakert to start\n");
+    print("We are waitting for pacemakert to start\n");
     sleep(2);
   };
 
@@ -400,9 +400,9 @@ sub secondPartInstall {
 
     #put the nodes in online mode (because of the reboot)
     sleep(5);
-    `crm node online serveur1`;
+    `crm node online server1`;
     sleep(5);
-    `crm node online serveur2`;
+    `crm node online server2`;
     sleep(5);
     `crm configure property maintenance-mode=false`;
 
