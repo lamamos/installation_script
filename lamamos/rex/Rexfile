@@ -402,12 +402,12 @@ sub secondPartInstall {
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
     #put the nodes in online mode (because of the reboot)
-    sleep(5);
     `crm node online server1`;
     sleep(5);
+    `crm configure property maintenance-mode=false`;
+    sleep(25);
     `crm node online server2`;
     sleep(5);
-    `crm configure property maintenance-mode=false`;
 
     #need to wait for drbd to be launched
     #ugly as hell, but should be fine for now (to wait for drbd to start)
