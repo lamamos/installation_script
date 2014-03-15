@@ -407,11 +407,10 @@ sub secondPartInstall {
     `crm node online server1`;
     sleep(25);
     `crm node online server2`;
-    sleep(5);
 
     #need to wait for drbd to be launched
     #ugly as hell, but should be fine for now (to wait for drbd to start)
-    sleep(10);
+    sleep(30);
   }
 
   communication::waitOtherServ('secondInstall', 1);
