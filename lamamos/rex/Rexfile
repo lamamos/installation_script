@@ -128,7 +128,7 @@ task "configure", group => martobre, sub{
 
 sub installBaseSysteme {
 
-  `apt-get update`
+  `apt-get update`;
 
   if($CFG::config{'OCFS2Init'} == "0"){
 
