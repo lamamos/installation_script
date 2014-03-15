@@ -167,7 +167,7 @@ sub installBaseSysteme {
     `/etc/init.d/pacemaker stop`;
     `/etc/init.d/corosync stop`;
 
-    #`shutdown -r 1`;
+    `shutdown -r 1`;
   }elsif($CFG::config{'OCFS2Init'} == "2"){
 
     $CFG::config{'OCFS2Init'} = "3";
@@ -185,13 +185,12 @@ sub installBaseSysteme {
 
     if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
-      #put the nodes in standby mode (for reboot)
+      `crm configure property maintenance-mode=false`;
       sleep(5);
       `crm node online server1`;
-      sleep(5);
+      sleep(30);
       `crm node online server2`;
       sleep(5);
-      `crm configure property maintenance-mode=false`;
     }
 
   }
