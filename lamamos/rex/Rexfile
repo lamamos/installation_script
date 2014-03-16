@@ -475,6 +475,10 @@ sub secondPartInstall {
 
   #TODO : (need to change the split brain management)
 
+  #we relaunch the mounting of the file systeme (some time it doesn't work fine the first time
+  sleep(10);
+  `crm resource cleanup cl_fs_ocfs2`;
+
 }
 
 
