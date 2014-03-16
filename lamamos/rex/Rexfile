@@ -410,6 +410,9 @@ sub secondPartInstall {
     `crm node online server2`;
     print("le serv2 est en ligne\n");
     sleep(10);
+    `crm node online server1`;
+    print("le serv1 est en ligne\n");
+    sleep(10);
     `crm configure property maintenance-mode=false`;
     print("sortie du mode maintenance\n");
 
