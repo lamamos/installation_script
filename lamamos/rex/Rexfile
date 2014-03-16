@@ -386,9 +386,9 @@ sub firstPartInstall {
 
 sub secondPartInstall {
 
-  `/etc/init.d/drbd start`;
+  #`/etc/init.d/drbd start`;
   #Ugly, should be waitting for the two node to be synchronised
-  sleep(5);
+  #sleep(5);
 
   `/etc/init.d/pacemaker start`;
   while(!Service::pacemaker::isPacemakerRunning()){
@@ -403,8 +403,10 @@ sub secondPartInstall {
   print("start to relaunch every nodes");
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
-    `crm node status`;
     #put the nodes in online mode (because of the reboot)
+    `crm node online server1`;
+    print("le serv1 est en ligne\n");
+    sleep(2);
     `crm node online server1`;
     print("le serv1 est en ligne\n");
     sleep(2);
