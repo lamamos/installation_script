@@ -403,12 +403,13 @@ sub secondPartInstall {
   print("start to relaunch every nodes");
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
+    `crm node status`;
     #put the nodes in online mode (because of the reboot)
-    `crm node online server2`;
-    print("le serv2 est en ligne\n");
-    sleep(2);
     `crm node online server1`;
     print("le serv1 est en ligne\n");
+    sleep(2);
+    `crm node online server2`;
+    print("le serv2 est en ligne\n");
     sleep(2);
     `crm configure property maintenance-mode=false`;
     print("sortie du mode maintenance\n");
