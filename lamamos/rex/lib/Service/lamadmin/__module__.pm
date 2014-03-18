@@ -7,14 +7,14 @@ require Service::apache::vhost;
 task define => sub {
 
 	my $variables = $_[0];
-        if(!defined $variables->{install_path}){die "install_path must be defined.";}
+  if(!defined $variables->{install_path}){die "install_path must be defined.";}
 
-        mkdir $variables->{install_path},
-                owner => "www-data",
-                group => "www-data",
-                mode  => 755;
+  mkdir $variables->{install_path},
+    owner => "www-data",
+    group => "www-data",
+    mode  => 755;
 
-        `tar -xvf files/lamadmin.tar.gz -C $variables->{install_path}`;
+  `tar -xvf files/lamadmin.tar.gz -C $variables->{install_path}`;
 };
 
 1;
