@@ -171,9 +171,6 @@ sub installBaseSysteme {
     #`shutdown -r 1`;
   }elsif($CFG::config{'OCFS2Init'} == "2"){
 
-    $CFG::config{'OCFS2Init'} = "3";
-    writeCfg('/etc/lamamos/lamamos.conf');
-
     `/etc/init.d/pacemaker start`;
     while(!Service::pacemaker::isPacemakerRunning()){
 
@@ -183,17 +180,6 @@ sub installBaseSysteme {
 
     #hugly as hell, we need to wait for pacemaker to finish to start
     sleep(15);
-
-    if($CFG::hostName eq $CFG::config{'firstServHostName'}){
-
-      `crm configure property maintenance-mode=false`;
-      sleep(5);
-      `crm node online server1`;
-      sleep(30);
-      `crm node online server2`;
-      sleep(5);
-    }
-
   }
 
 }
