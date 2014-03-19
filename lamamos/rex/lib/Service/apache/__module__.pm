@@ -42,6 +42,9 @@ $::module_name - {{ SHORT DESCRIPTION }}
     Service::apache::example();
  };
 
+=head1 ARGUMENTS
+
+
 =head1 TASKS
 
 =over 4

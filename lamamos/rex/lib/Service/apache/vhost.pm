@@ -67,6 +67,20 @@ $::module_name - {{ SHORT DESCRIPTION }}
     Service::apache::example();
  };
 
+=head1 ARGUMENTS
+
+string server_name
+number port
+string server_admin
+string docroot
+bool ssl
+string ssl_cert_dir
+string file_name
+bool manage_folder
+string docroot_owner
+string docroot_group
+string docroot_mode
+
 =head1 TASKS
 
 =over 4
