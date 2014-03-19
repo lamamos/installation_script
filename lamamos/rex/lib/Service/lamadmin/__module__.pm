@@ -39,6 +39,12 @@ $::module_name - {{ SHORT DESCRIPTION }}
     Service::webrss2email::example();
  };
 
+=head1 ARGUMENTS
+
+string install_path
+
+
+
 =head1 TASKS
 
 =over 4
