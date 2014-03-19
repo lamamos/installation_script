@@ -40,6 +40,12 @@ $::module_name - {{ SHORT DESCRIPTION }}
     Service::resolver::example();
  };
 
+=head1 ARGUMENTS
+
+string domain_name
+array string search_path
+array string name_servers
+
 =head1 TASKS
 
 =over 4
