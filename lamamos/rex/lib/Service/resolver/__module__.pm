@@ -8,14 +8,14 @@ task define => sub {
 
 	if(!$variables->{name_servers} eq 'ARRAY'){die "the name_servers variable must be defined as an array.";}
 	$variables->{domain_name} //= "";
-        if(!$variables->{search_path} eq 'ARRAY'){die "the search_path variable must be defined as an array.";}
+  if(!$variables->{search_path} eq 'ARRAY'){die "the search_path variable must be defined as an array.";}
 
 
-        file "/etc/resolv.conf",
-		content => template("templates/resolv.conf.tpl", variables => $variables),
-		owner => "root",
-		group => "root",
-		mode => "644";
+  file "/etc/resolv.conf",
+	content => template("templates/resolv.conf.tpl", variables => $variables),
+	owner => "root",
+	group => "root",
+	mode => "644";
 };
 
 1;
