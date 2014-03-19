@@ -9,7 +9,7 @@ task define => sub {
 
 	if(!defined $variables->{name}){die "name must be defined.";}
 	$variables->{home} //= "/home/".$variables->{name};
-        if(!defined $variables->{password}){die "password must be defined.";}
+  if(!defined $variables->{password}){die "password must be defined.";}
 	$variables->{shell} //= "/bin/bash";
 	$variables->{systeme} //= 0;
 	$variables->{no_create_home} //= 0;
@@ -44,6 +44,16 @@ $::module_name - {{ SHORT DESCRIPTION }}
  task yourtask => sub {
     Service::user::example();
  };
+
+=head1 ARGUMENTS
+
+string name
+string home
+string password
+string shell
+bool systeme
+bool no_create_home
+
 
 =head1 TASKS
 
