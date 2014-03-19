@@ -38,6 +38,9 @@ $::module_name - {{ SHORT DESCRIPTION }}
     Service::ntp::example();
  };
 
+=head1 ARGUMENTS
+
+
 =head1 TASKS
 
 =over 4
