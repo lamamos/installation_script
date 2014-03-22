@@ -11,6 +11,7 @@ group martobre => "127.0.0.1";
 
 use config;
 use install;
+use init;
 
 require Rex::Logger;
 
@@ -39,6 +40,8 @@ require Service::pacemaker::location;
 
 task "configure", group => martobre, sub{
 
+
+=pod
   if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
     print(STDERR $err, "\n");
     exit(1);
@@ -61,7 +64,9 @@ task "configure", group => martobre, sub{
 
   installBaseSysteme();
 
+=cut
 
+  initialise();
 
 
 
@@ -103,12 +108,15 @@ task "configure", group => martobre, sub{
   });
 
 
+=pod
   #we stop the socket server
   communication::stop({});
 
   #print $CFG::config{'OCFS2Init'};
   writeCfg('/etc/lamamos/lamamos.conf');
+=cut
 
+  finalise();
 
 };
 
