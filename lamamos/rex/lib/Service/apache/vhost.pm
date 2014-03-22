@@ -49,9 +49,9 @@ task define => sub{
 
 =pod
 
-=head1 NAME
+=head1 INSTANCENAME
 
-$::module_name - {{ SHORT DESCRIPTION }}
+server_name
 
 =head1 DESCRIPTION
 

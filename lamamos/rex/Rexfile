@@ -1,129 +1,107 @@
 user "root";
-password "test";
-pass_auth;
+private_key "/root/.ssh/id_rsa";
+public_key "/root/.ssh/id_rsa.pub";
+key_auth;
 
-#private_key "/root/.ssh/id_rsa";
-#public_key "/root/.ssh/id_rsa.pub";
-#key_auth;
-
-#group martobre => "192.168.0.150", "192.168.0.151";
-group martobre => "127.0.0.1";
+group martobre => "192.168.0.151";
 
 use config;
 use install;
 use init;
 
 require Rex::Logger;
-
 require communication;
 
-require Service::ntp;
-require Service::resolver;
+require Service::aliases;
 require Service::apache;
-require Service::apache::vhost;
 require Service::apache::php;
-require Service::lamadmin;
+require Service::apache::vhost;
+require Service::crontask;
+require Service::dovecot;
 require Service::drbd;
-
+require Service::fail2ban;
+require Service::git;
+require Service::lamadmin;
+require Service::mailman;
+require Service::mailman::maillinglist;
+require Service::mysql;
+require Service::nfs;
+require Service::ntp;
 require Service::pacemaker;
-require Service::pacemaker::service;
-require Service::pacemaker::primitive;
+require Service::pacemaker::clone;
+require Service::pacemaker::colocation;
+require Service::pacemaker::globfunc;
+require Service::pacemaker::group;
+require Service::pacemaker::location;
 require Service::pacemaker::master;
+require Service::pacemaker::order;
+require Service::pacemaker::primitive;
 require Service::pacemaker::property;
 require Service::pacemaker::rsc_defaults;
-require Service::pacemaker::group;
-require Service::pacemaker::colocation;
-require Service::pacemaker::order;
-require Service::pacemaker::clone;
-require Service::pacemaker::location;
-
+require Service::pacemaker::service;
+require Service::phpmyadmin;
+require Service::postfix;
+require Service::resolver;
+require Service::ssh;
+require Service::unison;
+require Service::uptime;
+require Service::user;
+require Service::webrss2email;
 
 task "configure", group => martobre, sub{
 
-
-=pod
-  if (my $err = ReadCfg('/etc/lamamos/lamamos.conf')) {
-    print(STDERR $err, "\n");
-    exit(1);
-  }
-
-
-
-  $CFG::hostName = getHostName();
-
-  #now the config hash is in : $CFG::config{'varName'};
-  #print $CFG::config{'ddName'}."\n";
-
-
-
-  #we start the socket server
-  communication::start();
-
-  communication::waitOtherServ('test', 1);
-
-
-  installBaseSysteme();
-
-=cut
-
   initialise();
 
+	Service::apache::define({
 
+	});
 
-  #Install the NTP server
-  Service::ntp::define({});
+	Service::apache::php::define({
 
+	});
 
-  #define the DNS to use
-  Service::resolver::define({
+	Service::apache::vhost::define({
 
-    'domain_name'        => 'testounet.fr',
-    'search_path'        => ['testounet.fr'],
-    'name_servers'       => ['208.67.222.222', '208.67.220.220'],
-  });
+		'file_name' => 'adminPannel',
+		'server_name' => 'www.testounet.fr',
+		'port' => '80',
+		'server_admin' => 'karlito@martobre.fr',
+		'docroot' => '/etc/lamamos/admin_panel/',
+		'docroot_owner' => 'www-data',
+		'docroot_group' => 'www-data',
+		'ssl' => '0',
+		'ssl_cert_dir' => '',
+		'manage_folder' => '0',
+		'docroot_mode' => '',
+		'after' => '',
+	});
 
-  #install the web server
-  Service::apache::define({});
+	Service::lamadmin::define({
 
-  #install php
-  Service::apache::php::define({});
+		'install_path' => '/etc/lamamos/admin_panel/',
+	});
 
-  #create a vhost for the admin panel
-  Service::apache::vhost::define({
+	Service::ntp::define({
 
-    'file_name'     => 'adminPannel',
-    'server_name'   => 'www.testounet.fr',
-    'port'          => 80,
-    'server_admin'  => 'karlito@martobre.fr',
-    'docroot'       => '/etc/lamamos/admin_panel/',
-    'docroot_owner' => 'www-data',
-    'docroot_group' => 'www-data',
-    'ssl'           => 0,
-  });
+	});
 
-  #install the admin pannel
-  Service::lamadmin::define({
+	Service::resolver::define({
 
-    'install_path' => '/etc/lamamos/admin_panel/',
-  });
+		'domain_name' => 'testounet.fr',
+		'search_path' => ['testounet.fr'],
+		'name_servers' => ['208.67.222.222', '208.67.220.220'],
+	});
 
+	Service::user::define({
 
-=pod
-  #we stop the socket server
-  communication::stop({});
-
-  #print $CFG::config{'OCFS2Init'};
-  writeCfg('/etc/lamamos/lamamos.conf');
-=cut
+		'name' => 'karlito',
+		'home' => '/home/karlito',
+		'password' => 'none',
+		'shell' => '/bin/bash',
+		'systeme' => '1',
+		'no_create_home' => '1',
+	});
 
   finalise();
-
 };
-
-
-
-
-
-
-
 
