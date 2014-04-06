@@ -14,7 +14,7 @@ task define => sub {
     group => "www-data",
     mode  => 755;
 
-  `cp -r files/lamadmin $variables->{install_path}`;
+  `cp -r files/lamadmin/* $variables->{install_path}`;
 };
 
 1;
