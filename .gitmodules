@@ -1,0 +1,3 @@
+[submodule "lamamos/rex/lib/Service/lamadmin/files/lamadmin"]
+	path = lamamos/rex/lib/Service/lamadmin/files/lamadmin
+	url = https://github.com/lamamos/lamadmin.git
