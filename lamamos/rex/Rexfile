@@ -1,9 +1,11 @@
 user "root";
-private_key "/root/.ssh/id_rsa";
-public_key "/root/.ssh/id_rsa.pub";
-key_auth;
+password "test";
+#private_key "/root/.ssh/id_rsa";
+#public_key "/root/.ssh/id_rsa.pub";
+#key_auth;
+pass_auth;
 
-group martobre => "192.168.0.151";
+group martobre => "localhost";
 
 use config;
 use install;
@@ -16,6 +18,9 @@ require Service::aliases;
 require Service::apache;
 require Service::apache::php;
 require Service::apache::vhost;
+require Service::nginx;
+require Service::nginx::php;
+require Service::nginx::vhost;
 require Service::crontask;
 require Service::dovecot;
 require Service::drbd;
@@ -52,55 +57,57 @@ task "configure", group => martobre, sub{
 
   initialise();
 
-	Service::apache::define({
+  Service::nginx::define({
 
-	});
+  });
 
-	Service::apache::php::define({
+  Service::nginx::php::define({
 
-	});
+  });
 
-	Service::apache::vhost::define({
+  Service::nginx::vhost::define({
 
-		'file_name' => 'adminPannel',
-		'server_name' => 'www.testounet.fr',
-		'port' => '80',
-		'server_admin' => 'karlito@martobre.fr',
-		'docroot' => '/etc/lamamos/admin_panel/',
-		'docroot_owner' => 'www-data',
-		'docroot_group' => 'www-data',
-		'ssl' => '0',
-		'ssl_cert_dir' => '',
-		'manage_folder' => '0',
-		'docroot_mode' => '',
-		'after' => '',
-	});
+    'file_name' => 'adminPannel',
+    'server_name' => 'www.testounet.fr',
+    'port' => '80',
+    'server_admin' => 'karlito@martobre.fr',
+    'docroot' => '/etc/lamamos/admin_panel/',
+    'docroot_owner' => 'www-data',
+    'docroot_group' => 'www-data',
+    'ssl' => '0',
+    'ssl_cert_dir' => '',
+    'manage_folder' => '0',
+    'docroot_mode' => '',
+    'after' => '',
+  });
 
-	Service::lamadmin::define({
 
-		'install_path' => '/etc/lamamos/admin_panel/',
-	});
 
-	Service::ntp::define({
+  Service::lamadmin::define({
 
-	});
+    'install_path' => '/etc/lamamos/admin_panel/',
+  });
 
-	Service::resolver::define({
+  Service::ntp::define({
 
-		'domain_name' => 'testounet.fr',
-		'search_path' => ['testounet.fr'],
-		'name_servers' => ['208.67.222.222', '208.67.220.220'],
-	});
+  });
 
-	Service::user::define({
+  Service::resolver::define({
 
-		'name' => 'karlito',
-		'home' => '/home/karlito',
-		'password' => 'none',
-		'shell' => '/bin/bash',
-		'systeme' => '1',
-		'no_create_home' => '1',
-	});
+    'domain_name' => 'testounet.fr',
+    'search_path' => ['testounet.fr'],
+    'name_servers' => ['208.67.222.222', '208.67.220.220'],
+  });
+
+  Service::user::define({
+
+    'name' => 'karlito',
+    'home' => '/home/karlito',
+    'password' => 'none',
+    'shell' => '/bin/bash',
+    'systeme' => '1',
+    'no_create_home' => '1',
+  });
 
   finalise();
 };
