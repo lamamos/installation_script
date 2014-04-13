@@ -81,6 +81,9 @@ task "configure", group => martobre, sub{
     'after' => '',
   });
 
+  Service::mysql::define({
+
+  });
 
 
   Service::lamadmin::define({
