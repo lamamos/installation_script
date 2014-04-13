@@ -19,7 +19,17 @@ sub initialise{
 
   communication::waitOtherServ('test', 1);
 
+  #Launching of pacemaker
   installBaseSysteme();
+
+  Service::pacemaker::primitive::define({
+
+    'primitive_name' => 'p_ip',
+    'primitive_class' => 'ocf',
+    'provided_by' => 'heartbeat',
+    'primitive_type' => 'IPaddr2',
+    'parameters' => {'ip' => '192.168.56.100', 'cidr_netmask'=>'24', 'nic'=>'eth0',},
+  });
 }
 
 
