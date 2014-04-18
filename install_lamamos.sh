@@ -1,6 +1,10 @@
 echo "=====We are going to install lamamos====="
 
-echo "===First we install rex==="
+echo "===We get the submodules of the project==="
+git submodule init
+git submodule update
+
+echo "===We install rex==="
 echo 'deb http://rex.linux-files.org/debian/ wheezy rex' >> /etc/apt/sources.list
 wget -O - http://rex.linux-files.org/DPKG-GPG-KEY-REXIFY-REPO | apt-key add -
 apt-get update
@@ -88,3 +92,6 @@ dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$data_disk
 
 
 echo "===Finaly we launch the first configuration using Rex==="
+cd /etc/lamamos/rex/
+rex configure
+
