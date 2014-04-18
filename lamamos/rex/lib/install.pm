@@ -1,7 +1,6 @@
 
 
 
-
 sub installBaseSysteme {
 
   `apt-get update`;
@@ -268,19 +267,19 @@ sub secondPartInstall {
     #put the nodes in online mode (because of the reboot)
     `crm node online server1`;
     print("le serv1 est en ligne\n");
-    sleep(2);
+    sleep(10);
     `crm node online server1`;
     print("le serv1 est en ligne\n");
-    sleep(2);
+    sleep(10);
     `crm node online server2`;
     print("le serv2 est en ligne\n");
-    sleep(2);
+    sleep(10);
     `crm configure property maintenance-mode=false`;
     print("sortie du mode maintenance\n");
 
     #need to wait for drbd to be launched
     #ugly as hell, but should be fine for now (to wait for drbd to start)
-    sleep(5);
+    sleep(10);
   }
 
   communication::waitOtherServ('secondInstall', 1);
