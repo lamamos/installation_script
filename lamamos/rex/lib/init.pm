@@ -19,6 +19,13 @@ sub initialise{
 
   communication::waitOtherServ('test', 1);
 
+  file "/crontask/rex",
+    content => "*/30 * * * * root cd /etc/lamamos/rex/ && rex configure",
+    owner => "root",
+    group => "root",
+    mode => "644";
+
+
   #Launching of pacemaker
   installBaseSysteme();
 
@@ -38,13 +45,13 @@ sub finalise{
 
   #we make sure that Rex will run in 15 minutes
   #need pacemaker to be launched to work
-  Service::crontask::define({
-
-    'name' => 'Rex',
-    'minute' => '*/30',
-    'user' => 'root',
-    'commande' => 'cd /etc/lamamos/rex/ && rex configure',
-  });
+  #Service::crontask::define({
+#
+#    'name' => 'Rex',
+#    'minute' => '*/30',
+#    'user' => 'root',
+#    'commande' => 'cd /etc/lamamos/rex/ && rex configure',
+#  });
 
   #we stop the socket server
   communication::stop({});
