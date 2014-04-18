@@ -19,6 +19,10 @@ task define => sub {
         if(!defined $variables->{user}){die "user must be defined.";}
 	if(!defined $variables->{commande}){die "commande must be defined.";}
 
+        mkdir "/crontask",
+                owner => "root",
+                group => "root",
+                mode => "644";
 
         file "/crontask/".$variables->{name},
                 content => template("templates/crontask.tpl", variables => $variables),

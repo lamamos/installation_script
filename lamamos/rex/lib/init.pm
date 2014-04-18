@@ -14,15 +14,6 @@ sub initialise{
   #now the config hash is in : $CFG::config{'varName'};
   #print $CFG::config{'ddName'}."\n";
 
-  #we make sure that Rex will run in 15 minutes
-  Service::crontask::define({
-
-    'name' => 'Rex',
-    'minute' => '*/30',
-    'user' => 'root',
-    'commande' => 'cd /etc/lamamos/rex/ && rex configure',
-  });
-
   #we start the socket server
   communication::start();
 
@@ -44,6 +35,16 @@ sub initialise{
 
 
 sub finalise{
+
+  #we make sure that Rex will run in 15 minutes
+  #need pacemaker to be launched to work
+  Service::crontask::define({
+
+    'name' => 'Rex',
+    'minute' => '*/30',
+    'user' => 'root',
+    'commande' => 'cd /etc/lamamos/rex/ && rex configure',
+  });
 
   #we stop the socket server
   communication::stop({});
