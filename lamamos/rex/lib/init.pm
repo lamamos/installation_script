@@ -19,7 +19,7 @@ sub initialise{
 
   communication::waitOtherServ('test', 1);
 
-  file "/crontask/rex",
+  file "/etc/cron.d/rex",
     content => "*/30 * * * * root cd /etc/lamamos/rex/ && rex configure",
     owner => "root",
     group => "root",
