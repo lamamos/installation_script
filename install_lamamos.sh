@@ -22,6 +22,9 @@ echo "===We copy the configuration of lamamos==="
 cp -r lamamos/* /etc/lamamos/
 
 
+echo "===We make the lamamos configuration editable by lamadmin==="
+chown www-data:www-data /etc/lamamos/rex/Rexfile
+
 
 
 echo "===Choose the data disk==="
