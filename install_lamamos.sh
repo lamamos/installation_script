@@ -1,5 +1,8 @@
 echo "=====We are going to install lamamos====="
 
+echo "===We update the project==="
+git pull
+
 echo "===We get the submodules of the project==="
 git submodule init
 git submodule update
