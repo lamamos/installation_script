@@ -10,12 +10,12 @@ task define => sub {
 
 	my $variables = $_[0];
 
-        if(!defined $variables->{primitive_name}){die "primitive_name must be defined (0 or 1).";}
+  if(!defined $variables->{primitive_name}){die "primitive_name must be defined (0 or 1).";}
 	if(!defined $variables->{primitive_class}){die "enable_secauth must be defined (0 or 1).";}
 	if(!defined $variables->{primitive_type}){die "authkey_path must be defined.";}
 	if(!defined $variables->{provided_by}){die "bind_address must be defined.";}
 	if(defined $variables->{parameters}){if(!$variables->{parameters} eq ref {}){die "parameter must be an hash.";}}else{$variables->{parameters} = {}}
-        if(defined $variables->{operations}){if(!$variables->{operations} eq ref {}){die "operations must be an hash.";}}else{$variables->{operations} = {}}
+  if(defined $variables->{operations}){if(!$variables->{operations} eq ref {}){die "operations must be an hash.";}}else{$variables->{operations} = {}}
 
 	#if the primitive is not declared as the one we got in the config
 	if(!primitiveDefined($variables)){
