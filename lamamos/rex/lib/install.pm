@@ -349,7 +349,7 @@ sub secondPartInstall {
     `cp -r /etc/lamamos/rex/ /data/`;
 
     #TODO : rechange the Rexfile user in /data/rex.
-    `chown www-data:www-data /etc/lamamos/rex/Rexfile`;
+    `chown www-data:www-data /data/rex/Rexfile`;
 
     #and we mount that folder in /etc/lamamos/rex
     #mount -o bind /data/rex /etc/lamamos/rex
