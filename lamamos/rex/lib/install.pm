@@ -3,11 +3,10 @@
 
 sub installBaseSysteme {
 
-  `apt-get update`;
-
-  communication::waitOtherServ('install', 1);
 
   if($CFG::config{'OCFS2Init'} == "0"){
+
+    communication::waitOtherServ('install', 1);
 
     firstPartInstall();
     $CFG::config{'OCFS2Init'} = "1";
@@ -28,6 +27,8 @@ sub installBaseSysteme {
     `shutdown -r 1`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
+
+    communication::waitOtherServ('install', 1);
 
     secondPartInstall();
     $CFG::config{'OCFS2Init'} = "2";
