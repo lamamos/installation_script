@@ -18,8 +18,7 @@ sub initialise{
 
   #we start the socket server
   communication::start();
-
-  communication::waitOtherServ('test', 1);
+  #communication::waitOtherServ('test', 1);
 
   file "/etc/cron.d/rex",
     content => "*/30 * * * * root cd /etc/lamamos/rex/ && rex configure",

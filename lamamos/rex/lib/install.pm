@@ -5,6 +5,8 @@ sub installBaseSysteme {
 
   `apt-get update`;
 
+  communication::waitOtherServ('install', 1);
+
   if($CFG::config{'OCFS2Init'} == "0"){
 
     firstPartInstall();
