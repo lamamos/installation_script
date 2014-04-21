@@ -14,7 +14,8 @@ sub initialise{
   #now the config hash is in : $CFG::config{'varName'};
   #print $CFG::config{'ddName'}."\n";
 
-  `apt-get update`;
+  #Rex automaticaly get the new updates when launched
+  #`apt-get update`;
 
   #we start the socket server
   communication::start();
