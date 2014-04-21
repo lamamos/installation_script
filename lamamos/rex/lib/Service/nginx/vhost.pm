@@ -34,7 +34,7 @@ task define => sub{
     content         => template("templates/vhost.conf.tpl", variables => $variables),
     owner           => "root",
     group           => "root",
-    mode            => "644",
+    mode            => "755",
     on_change       => sub{ service "nginx" => "reload"; };
 
 };
