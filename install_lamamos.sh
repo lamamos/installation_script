@@ -1,5 +1,8 @@
 echo "=====We are going to install lamamos====="
 
+echo "===We update the project==="
+git pull
+
 echo "===We get the submodules of the project==="
 git submodule init
 git submodule update
@@ -18,6 +21,9 @@ mkdir /etc/lamamos
 echo "===We copy the configuration of lamamos==="
 cp -r lamamos/* /etc/lamamos/
 
+
+echo "===We make the lamamos configuration editable by lamadmin==="
+chown www-data:www-data /etc/lamamos/rex/Rexfile
 
 
 

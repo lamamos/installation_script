@@ -3,9 +3,10 @@
 
 sub installBaseSysteme {
 
-  `apt-get update`;
 
   if($CFG::config{'OCFS2Init'} == "0"){
+
+    communication::waitOtherServ('install', 1);
 
     firstPartInstall();
     $CFG::config{'OCFS2Init'} = "1";
@@ -26,6 +27,8 @@ sub installBaseSysteme {
     `shutdown -r 1`;
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
+
+    communication::waitOtherServ('install', 1);
 
     secondPartInstall();
     $CFG::config{'OCFS2Init'} = "2";
@@ -339,6 +342,51 @@ sub secondPartInstall {
   #we relaunch the mounting of the file systeme (some time it doesn't work fine the first time
   sleep(10);
   `crm resource cleanup cl_fs_ocfs2`;
+  sleep(10);
+
+
+  if($CFG::hostName eq $CFG::config{'firstServHostName'}){
+
+    #finaly we put the rex configuration in the corresponding
+    #folder (that will be shared using drbd)
+    `cp -r /etc/lamamos/rex/ /data/`;
+
+    #TODO : rechange the Rexfile user in /data/rex.
+    `chown www-data:www-data /data/rex/Rexfile`;
+
+    #and we mount that folder in /etc/lamamos/rex
+    #mount -o bind /data/rex /etc/lamamos/rex
+    #explained here : http://www.linux-ha.org/doc/man-pages/re-ra-Filesystem.html
+    # primitive p_fs_rex ocf:heartbeat:Filesystem params device="/data/rex" directory="/etc/lamamos/rex" fstype="none" options="bind"
+    Service::pacemaker::primitive::define({
+
+      'primitive_name' => 'p_fs_rex',
+      'primitive_class' => 'ocf',
+      'provided_by' => 'heartbeat',
+      'primitive_type' => 'Filesystem',
+      'parameters' => {'device' => '/data/rex', 'directory' => '/etc/lamamos/rex', 'fstype' => 'none', 'options' => 'bind',},
+    });
+
+    # clone cl_fs_rex p_fs_rex
+    Service::pacemaker::clone::define({
+
+      'name' => 'cl_fs_rex',
+      'primitive' => 'p_fs_rex',
+    });
+
+    # order o_fs_rex inf: cl_fs_ocfs2:start cl_fs_rex
+    Service::pacemaker::order::define({
+
+      'name' => 'o_fs_rex',
+      'score' => 'INFINITY',
+      'first' => 'cl_fs_ocfs2:start',
+      'second' => 'cl_fs_rex',
+    });
+
+  }
+
+  communication::waitOtherServ('secondInstall', 3);
+
 
 }
 
