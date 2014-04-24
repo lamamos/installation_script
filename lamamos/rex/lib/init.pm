@@ -41,7 +41,7 @@ sub initialise{
   #communication::waitOtherServ('test', 1);
 
   file "/etc/cron.d/rex",
-    content => "*/30 * * * * root cd /etc/lamamos/rex/ && rex configure >> /var/log/rex.log 2>&1",
+    content => "*/30 * * * *	root	/etc/lamamos/rex/launch_rex.sh > /var/log/rex.log 2>&1",
     owner => "root",
     group => "root",
     mode => "644";
