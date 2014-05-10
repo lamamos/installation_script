@@ -1,7 +1,7 @@
 lamamos_script
 ==============
 
-A script to install lamamos
+A script to install lamamos. For more information and tutorial check this [site](https://lamamos.github.io/)
 
 
 
