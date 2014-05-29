@@ -250,7 +250,8 @@ apt-get install -y rex libxml-libxml-perl
 echo "===Formating the drive==="
 #We install pv in order to be able to display a progress bar of the formatting
 apt-get install pv
-taille=`fdisk -l $data_disk | sed -n 2p | cut -d ' ' -f 5`
+getConfigParameter ddName;
+taille=`fdisk -l $configParameter | sed -n 2p | cut -d ' ' -f 5`
 
 dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$data_disk
 
