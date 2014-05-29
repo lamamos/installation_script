@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "=====We are going to install lamamos====="
+apt-get install -y git
 
 echo "===We update the project==="
 git pull
