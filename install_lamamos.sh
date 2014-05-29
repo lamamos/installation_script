@@ -172,13 +172,16 @@ echo ""
 echo ""
 
 
+isFirstServer=0;
 echo -n "Are you configurating the first server ? (if you already configured the first server, I can pull the config from it) [y/n] > "
 read -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Nn]$ ]]
 then
   getConfigFromFirstServer;
+  isFirstServer=0;
 else
+  isFirstServer=1;
   configNotValidated=1;
   while [ $configNotValidated -gt 0 ]
   do
@@ -194,13 +197,24 @@ fi
 
 
 
+getConfigParameter(){
+
+  configParameter=`cat lamamos/lamamos.conf | grep "$1" | sed "s/\W*'$1' => '\(.*\)',/\1/"`;
+}
 
 
 
+echo "===We set the configured hostname==="
 
+if [ $isFirstServer -gt 0 ]
+then
+  getConfigParameter firstServHostName;
+else
+  getConfigParameter SeconServHostName;
+fi
 
-
-
+echo "$configParameter" > /etc/hostname
+hostname $configParameter
 
 
 
