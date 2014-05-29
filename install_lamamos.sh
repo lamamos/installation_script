@@ -253,7 +253,7 @@ apt-get install pv
 getConfigParameter ddName;
 taille=`fdisk -l $configParameter | sed -n 2p | cut -d ' ' -f 5`
 
-dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$data_disk
+dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$configParameter
 
 
 echo "===Finally we launch the first configuration using Rex==="
