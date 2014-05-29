@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "=====We are going to install lamamos====="
+apt-get update
 apt-get install -y git
 
 echo "===We update the project==="
@@ -224,16 +225,6 @@ hostname $configParameter
 
 
 
-
-
-
-echo "===We install rex==="
-echo 'deb http://rex.linux-files.org/debian/ wheezy rex' >> /etc/apt/sources.list
-wget -O - http://rex.linux-files.org/DPKG-GPG-KEY-REXIFY-REPO | apt-key add -
-apt-get update
-apt-get install -y rex libxml-libxml-perl
-
-
 echo "===Then we create a directory for lamamos configuration==="
 mkdir /etc/lamamos
 
@@ -244,6 +235,16 @@ cp -r lamamos/* /etc/lamamos/
 
 echo "===We make the lamamos configuration editable by lamadmin==="
 chown www-data:www-data /etc/lamamos/rex/Rexfile
+
+
+
+
+echo "===We install rex==="
+echo 'deb http://rex.linux-files.org/debian/ wheezy rex' >> /etc/apt/sources.list
+wget -O - http://rex.linux-files.org/DPKG-GPG-KEY-REXIFY-REPO | apt-key add -
+apt-get update
+apt-get install -y rex libxml-libxml-perl
+
 
 
 echo "===Formating the drive==="
