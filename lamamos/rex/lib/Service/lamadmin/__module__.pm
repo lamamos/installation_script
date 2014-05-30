@@ -34,6 +34,8 @@ task define => sub {
     mode  => 755;
 
   `cp -r /etc/lamamos/rex/lib/Service/lamadmin/files/lamadmin/* $variables->{install_path}`;
+  `echo $CFG::config{'adminPanelPassw'} > $variables->{install_path}/.htpasswd`;
+
 };
 
 1;

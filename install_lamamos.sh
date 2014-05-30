@@ -1,8 +1,8 @@
 #!/bin/bash
 echo -en "\ec"
-echo "=====We are going to install lamamos====="
+echo "=====We are going to install git====="
 apt-get update
-apt-get install -y git
+apt-get install -y git apache2-utils
 
 echo -en "\ec"
 echo "===We update the project==="
@@ -95,8 +95,8 @@ function configureFirstServer {
   echo -en "\ec"
   echo "=== Configuration of lamamos ==="
   echo "I am going to ask you a few questions in order to configure lamamos"
-  echo ""
-  echo ""
+  echo
+  echo
 
   #ajouter un compteur sur le nombre de questions
   echo -n "This server hostname should be (will be set) > "
@@ -105,8 +105,8 @@ function configureFirstServer {
   echo -n "This server IP is (should be already set) > "
   read server1IP
 
-  echo ""
-  echo ""
+  echo
+  echo
 
   echo -n "The second server hostname should be (will be set) > "
   read server2Hostname
@@ -114,11 +114,19 @@ function configureFirstServer {
   echo -n "The second server IP is (should be already set) > "
   read server2IP
 
-  echo ""
-  echo ""
+  echo
+  echo
 
   echo -n "The IP that will be shared between the servers (must be different from the two previus ones) > "
   read sharedIP
+
+  echo
+  echo
+
+  echo -n "The password protecting the administration pannel of the server > "
+  read -s adminPassw
+  adminPassw=`htpasswd -n -b admin $adminPassw`
+  echo
 
   chooseHardDrive;
 
@@ -144,6 +152,7 @@ function writeConfigToFile {
   echo "  'SeconServHostName' => '$server2Hostname'," >> lamamos/lamamos.conf
   echo "  'SeconServIP' => '$server2IP'," >> lamamos/lamamos.conf
   echo "  'sharedIP' => '$sharedIP'," >> lamamos/lamamos.conf
+  echo "  'adminPanelPassw' => '$adminPassw'," >> lamamos/lamamos.conf
   echo ");" >> lamamos/lamamos.conf
   echo "" >> lamamos/lamamos.conf
 }
@@ -181,7 +190,7 @@ function validateConfiguration {
 
 echo -en "\ec"
 echo "=== Configuration of lamamos ==="
-echo "I am going to ask you a few questions in order to configure lamamos (6 questions)"
+echo "I am going to ask you a few questions in order to configure lamamos (7 questions)"
 echo ""
 echo ""
 
