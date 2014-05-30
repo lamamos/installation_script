@@ -39,6 +39,7 @@ task define => sub{
     if(!defined $variables->{docroot_group}){die "When the managing the folder docroot_group must be defined.";}
     if(!defined $variables->{docroot_mode}){die "When the managing the folder docroot_mode must be defined.";}
   }
+  $variables->{password_protected} //= 0;
 
   if($variables->{manage_folder}){
     mkdir $variables->{docroot},
@@ -98,6 +99,7 @@ bool manage_folder
 string docroot_owner
 string docroot_group
 string docroot_mode
+bool password_protected
 
 =head1 TASKS
 

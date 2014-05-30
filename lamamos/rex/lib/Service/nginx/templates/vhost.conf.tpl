@@ -22,6 +22,19 @@ server {
     # include /etc/nginx/naxsi.rules
   }
 
+
+<% if(defined $variables->{password_protected}){ %>
+    auth_basic "Restricted";
+    auth_basic_user_file <%= $variables->{docroot} %>/.htpasswd;
+<% }else{ %>
+
+<% } %>
+
+
+
+
+
+
 # the directoryes of the web site
 <% if(defined $variables->{directories}){ %>
   <% foreach(@{$variables->{directories}}){ %>
