@@ -68,7 +68,7 @@ task "configure", group => martobre, sub{
   Service::nginx::vhost::define({
 
     'file_name' => 'adminPannel',
-    'server_name' => 'www.testounet.fr',
+    'server_name' => 'adminpanel.org',
     'port' => '80',
     'server_admin' => 'karlito@martobre.fr',
     'docroot' => '/etc/lamamos/admin_panel/',
@@ -97,8 +97,8 @@ task "configure", group => martobre, sub{
 
   Service::resolver::define({
 
-    'domain_name' => 'testounet.fr',
-    'search_path' => ['testounet.fr'],
+    'domain_name' => 'mydomain.fr',
+    'search_path' => ['mydomain.fr'],
     'name_servers' => ['208.67.222.222', '208.67.220.220'],
   });
 
