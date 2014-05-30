@@ -258,6 +258,10 @@ echo "===We make the lamamos configuration editable by lamadmin==="
 chown www-data:www-data /etc/lamamos/rex/Rexfile
 
 
+echo "===We generate ssh key==="
+ssh-keygen -f /root/.ssh/id_rsa -N ""
+cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+
 
 echo -en "\ec"
 echo "===We install rex==="

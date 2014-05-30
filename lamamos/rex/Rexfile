@@ -1,9 +1,9 @@
-user "root";
-password "test";
-#private_key "/root/.ssh/id_rsa";
-#public_key "/root/.ssh/id_rsa.pub";
-#key_auth;
-pass_auth;
+#user "root";
+#password "test";
+#pass_auth;
+private_key "/root/.ssh/id_rsa";
+public_key "/root/.ssh/id_rsa.pub";
+key_auth;
 
 group martobre => "localhost";
 
