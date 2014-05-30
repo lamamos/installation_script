@@ -1,9 +1,10 @@
 #!/bin/bash
-
+echo -en "\ec"
 echo "=====We are going to install lamamos====="
 apt-get update
 apt-get install -y git
 
+echo -en "\ec"
 echo "===We update the project==="
 git pull
 
@@ -84,12 +85,18 @@ function chooseHardDrive {
   echo    # (optional) move to a new line
   if [[ ! $REPLY =~ ^[Yy]$ ]]
   then
-      exit 1
+      chooseHardDrive;
   fi
 }
 
 
 function configureFirstServer {
+
+  echo -en "\ec"
+  echo "=== Configuration of lamamos ==="
+  echo "I am going to ask you a few questions in order to configure lamamos"
+  echo ""
+  echo ""
 
   #ajouter un compteur sur le nombre de questions
   echo -n "This server hostname should be (will be set) > "
@@ -154,11 +161,9 @@ function getConfigFromFirstServer {
 
 function validateConfiguration {
 
-  echo ""
-  echo ""
-  echo ""
-  echo ""
+  echo -en "\ec"
   echo "=== Here is the configuration you just entered ==="
+  echo ""
   echo "The hostname of this server : $server1Hostname"
   echo "The IP of this server : $server1IP"
   echo "The hostname of the second server : $server2Hostname"
@@ -174,12 +179,11 @@ function validateConfiguration {
   fi
 }
 
-
+echo -en "\ec"
 echo "=== Configuration of lamamos ==="
 echo "I am going to ask you a few questions in order to configure lamamos (6 questions)"
 echo ""
 echo ""
-
 
 isFirstServer=0;
 echo -n "Are you configurating the first server ? (if you already configured the first server, I can pull the config from it) [y/n] > "
@@ -196,6 +200,7 @@ else
   do
     configureFirstServer;
     validateConfiguration;
+    echo -en "\ec"
   done
   writeConfigToFile;
 fi
@@ -212,7 +217,7 @@ getConfigParameter(){
 }
 
 
-
+echo -en "\ec"
 echo "===We set the configured hostname==="
 
 if [ $isFirstServer -gt 0 ]
@@ -231,7 +236,7 @@ hostname $configParameter
 
 
 
-
+echo -en "\ec"
 echo "===Then we create a directory for lamamos configuration==="
 mkdir /etc/lamamos
 
@@ -245,7 +250,7 @@ chown www-data:www-data /etc/lamamos/rex/Rexfile
 
 
 
-
+echo -en "\ec"
 echo "===We install rex==="
 echo 'deb http://rex.linux-files.org/debian/ wheezy rex' >> /etc/apt/sources.list
 wget -O - http://rex.linux-files.org/DPKG-GPG-KEY-REXIFY-REPO | apt-key add -
@@ -253,7 +258,7 @@ apt-get update
 apt-get install -y rex libxml-libxml-perl
 
 
-
+echo -en "\ec"
 echo "===Formating the drive==="
 #We install pv in order to be able to display a progress bar of the formatting
 apt-get install pv
@@ -262,7 +267,7 @@ taille=`fdisk -l $configParameter | sed -n 2p | cut -d ' ' -f 5`
 
 dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$configParameter
 
-
+echo -en "\ec"
 echo "===Finally we launch the first configuration using Rex==="
 cd /etc/lamamos/rex/
 rex configure
