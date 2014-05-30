@@ -79,7 +79,9 @@ task "configure", group => martobre, sub{
     'manage_folder' => '0',
     'docroot_mode' => '',
     'after' => '',
+    'password_protected' => '1',
   });
+
 
   Service::mysql::define({
 
