@@ -107,6 +107,12 @@ function configureFirstServer {
   echo -n "The second server IP is (should be already set) > "
   read server2IP
 
+  echo ""
+  echo ""
+
+  echo -n "The IP that will be shared between the servers (must be different from the two previus ones) > "
+  read sharedIP
+
   chooseHardDrive;
 
   randomString 30;
@@ -125,11 +131,12 @@ function writeConfigToFile {
   echo "  'drbdSharedSecret' => '$myRandomResult'," >> lamamos/lamamos.conf
   echo "  'ddName' => '$data_disk'," >> lamamos/lamamos.conf
   echo "  'OCFS2Init' => '0'," >> lamamos/lamamos.conf
-  echo "  'SeconServIP' => '$server2IP'," >> lamamos/lamamos.conf
   echo "  'ddFormated' => '0'," >> lamamos/lamamos.conf
-  echo "  'firstServIP' => '$server1IP'," >> lamamos/lamamos.conf
   echo "  'firstServHostName' => '$server1Hostname'," >> lamamos/lamamos.conf
+  echo "  'firstServIP' => '$server1IP'," >> lamamos/lamamos.conf
   echo "  'SeconServHostName' => '$server2Hostname'," >> lamamos/lamamos.conf
+  echo "  'SeconServIP' => '$server2IP'," >> lamamos/lamamos.conf
+  echo "  'sharedIP' => '$sharedIP'," >> lamamos/lamamos.conf
   echo ");" >> lamamos/lamamos.conf
   echo "" >> lamamos/lamamos.conf
 }
@@ -169,7 +176,7 @@ function validateConfiguration {
 
 
 echo "=== Configuration of lamamos ==="
-echo "I am going to ask you a few questions in order to configure lamamos"
+echo "I am going to ask you a few questions in order to configure lamamos (6 questions)"
 echo ""
 echo ""
 
