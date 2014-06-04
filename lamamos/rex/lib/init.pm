@@ -56,7 +56,7 @@ sub initialise{
     'primitive_class' => 'ocf',
     'provided_by' => 'heartbeat',
     'primitive_type' => 'IPaddr2',
-    'parameters' => {'ip' => '192.168.56.100', 'cidr_netmask'=>'24', 'nic'=>'eth0',},
+    'parameters' => {'ip' => $CFG::config{'sharedIP'}, 'cidr_netmask'=>'24', 'nic'=>'eth0',},
   });
 }
 

@@ -1,9 +1,10 @@
 #!/bin/bash
-
-echo "=====We are going to install lamamos====="
+echo -en "\ec"
+echo "=====We are going to install git====="
 apt-get update
-apt-get install -y git
+apt-get install -y git apache2-utils
 
+echo -en "\ec"
 echo "===We update the project==="
 git pull
 
@@ -84,12 +85,18 @@ function chooseHardDrive {
   echo    # (optional) move to a new line
   if [[ ! $REPLY =~ ^[Yy]$ ]]
   then
-      exit 1
+      chooseHardDrive;
   fi
 }
 
 
 function configureFirstServer {
+
+  echo -en "\ec"
+  echo "=== Configuration of lamamos ==="
+  echo "I am going to ask you a few questions in order to configure lamamos"
+  echo
+  echo
 
   #ajouter un compteur sur le nombre de questions
   echo -n "This server hostname should be (will be set) > "
@@ -98,14 +105,28 @@ function configureFirstServer {
   echo -n "This server IP is (should be already set) > "
   read server1IP
 
-  echo ""
-  echo ""
+  echo
+  echo
 
   echo -n "The second server hostname should be (will be set) > "
   read server2Hostname
 
   echo -n "The second server IP is (should be already set) > "
   read server2IP
+
+  echo
+  echo
+
+  echo -n "The IP that will be shared between the servers (must be different from the two previus ones) > "
+  read sharedIP
+
+  echo
+  echo
+
+  echo -n "The password protecting the administration pannel of the server > "
+  read -s adminPassw
+  adminPassw=`htpasswd -n -b admin $adminPassw`
+  echo
 
   chooseHardDrive;
 
@@ -125,11 +146,13 @@ function writeConfigToFile {
   echo "  'drbdSharedSecret' => '$myRandomResult'," >> lamamos/lamamos.conf
   echo "  'ddName' => '$data_disk'," >> lamamos/lamamos.conf
   echo "  'OCFS2Init' => '0'," >> lamamos/lamamos.conf
-  echo "  'SeconServIP' => '$server2IP'," >> lamamos/lamamos.conf
   echo "  'ddFormated' => '0'," >> lamamos/lamamos.conf
-  echo "  'firstServIP' => '$server1IP'," >> lamamos/lamamos.conf
   echo "  'firstServHostName' => '$server1Hostname'," >> lamamos/lamamos.conf
+  echo "  'firstServIP' => '$server1IP'," >> lamamos/lamamos.conf
   echo "  'SeconServHostName' => '$server2Hostname'," >> lamamos/lamamos.conf
+  echo "  'SeconServIP' => '$server2IP'," >> lamamos/lamamos.conf
+  echo "  'sharedIP' => '$sharedIP'," >> lamamos/lamamos.conf
+  echo "  'adminPanelPassw' => '$adminPassw'," >> lamamos/lamamos.conf
   echo ");" >> lamamos/lamamos.conf
   echo "" >> lamamos/lamamos.conf
 }
@@ -147,11 +170,9 @@ function getConfigFromFirstServer {
 
 function validateConfiguration {
 
-  echo ""
-  echo ""
-  echo ""
-  echo ""
+  echo -en "\ec"
   echo "=== Here is the configuration you just entered ==="
+  echo ""
   echo "The hostname of this server : $server1Hostname"
   echo "The IP of this server : $server1IP"
   echo "The hostname of the second server : $server2Hostname"
@@ -167,12 +188,11 @@ function validateConfiguration {
   fi
 }
 
-
+echo -en "\ec"
 echo "=== Configuration of lamamos ==="
-echo "I am going to ask you a few questions in order to configure lamamos"
+echo "I am going to ask you a few questions in order to configure lamamos (7 questions)"
 echo ""
 echo ""
-
 
 isFirstServer=0;
 echo -n "Are you configurating the first server ? (if you already configured the first server, I can pull the config from it) [y/n] > "
@@ -189,6 +209,7 @@ else
   do
     configureFirstServer;
     validateConfiguration;
+    echo -en "\ec"
   done
   writeConfigToFile;
 fi
@@ -205,7 +226,7 @@ getConfigParameter(){
 }
 
 
-
+echo -en "\ec"
 echo "===We set the configured hostname==="
 
 if [ $isFirstServer -gt 0 ]
@@ -224,7 +245,7 @@ hostname $configParameter
 
 
 
-
+echo -en "\ec"
 echo "===Then we create a directory for lamamos configuration==="
 mkdir /etc/lamamos
 
@@ -237,8 +258,12 @@ echo "===We make the lamamos configuration editable by lamadmin==="
 chown www-data:www-data /etc/lamamos/rex/Rexfile
 
 
+echo "===We generate ssh key==="
+ssh-keygen -f /root/.ssh/id_rsa -N ""
+cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
 
+echo -en "\ec"
 echo "===We install rex==="
 echo 'deb http://rex.linux-files.org/debian/ wheezy rex' >> /etc/apt/sources.list
 wget -O - http://rex.linux-files.org/DPKG-GPG-KEY-REXIFY-REPO | apt-key add -
@@ -246,7 +271,7 @@ apt-get update
 apt-get install -y rex libxml-libxml-perl
 
 
-
+echo -en "\ec"
 echo "===Formating the drive==="
 #We install pv in order to be able to display a progress bar of the formatting
 apt-get install pv
@@ -255,7 +280,7 @@ taille=`fdisk -l $configParameter | sed -n 2p | cut -d ' ' -f 5`
 
 dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$configParameter
 
-
+echo -en "\ec"
 echo "===Finally we launch the first configuration using Rex==="
 cd /etc/lamamos/rex/
 rex configure
