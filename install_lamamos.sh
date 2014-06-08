@@ -50,7 +50,7 @@ function chooseHardDrive {
 
 		  avalable_disks+=("$name ($size)")
 	  fi
-  done < <(printf %s "$disks" /)	#need to be here to create a process substitution, so the variable are not erased at the end
+  done < <(echo "$disks")	#need to be here to create a process substitution, so the variable are not erased at the end
 
 
   number_disks=${#avalable_disks[@]}
