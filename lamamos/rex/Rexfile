@@ -1,11 +1,11 @@
-#user "root";
+user "root";
 #password "test";
 #pass_auth;
 private_key "/root/.ssh/id_rsa";
 public_key "/root/.ssh/id_rsa.pub";
 key_auth;
 
-group martobre => "localhost";
+group server => "localhost";
 
 use config;
 use install;
@@ -53,7 +53,7 @@ require Service::uptime;
 require Service::user;
 require Service::webrss2email;
 
-task "configure", group => martobre, sub{
+task "configure", group => server, sub{
 
   initialise();
 
