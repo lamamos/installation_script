@@ -110,7 +110,7 @@ task "configure", group => server, sub{
     'home' => '/home/karlito',
     'password' => 'none',
     'shell' => '/bin/bash',
-    'systeme' => '1',
+    'system_user' => '1',
     'no_create_home' => '1',
   });
 
