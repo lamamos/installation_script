@@ -134,6 +134,7 @@ sub firstPartInstall {
   #ugly as hell, we wait for the two server to detet that they are connected
   sleep(5);	
 
+  communication::waitOtherServ('firstInstall', 1);
 
 
   #we now define the first server as primari (needed for the first synchronisation)
@@ -258,8 +259,7 @@ sub firstPartInstall {
   }
 
 
-  #TODO : check if this works fine
-  communication::waitOtherServ('firstInstall', 1);
+  communication::waitOtherServ('firstInstall', 2);
 
 }
 
