@@ -19,8 +19,7 @@
 case "$1" in
   start)
     echo "Starting rex configure"
-    cd /etc/lamamos/rex/
-    rex configure
+    /etc/lamamos/rex/launch_rex.sh > /var/log/rex.log 2>&1
     ;;
   stop)
     echo "didn't do anything"
