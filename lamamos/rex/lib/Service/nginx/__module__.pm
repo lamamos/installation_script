@@ -26,7 +26,7 @@ desc "Start Nginx Service";
 task define => sub {
 
 	install "nginx";
-	`rm /etc/nginx/sites-enabled/default`
+	`rm /etc/nginx/sites-enabled/default`;
 
 	service nginx => ensure => "started";
 };
