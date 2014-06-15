@@ -19,6 +19,7 @@
 case "$1" in
   start)
     echo "Starting rex configure"
+    sleep 10
     /etc/lamamos/rex/launch_rex.sh > /var/log/rex.log 2>&1
     ;;
   stop)
