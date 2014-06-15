@@ -280,6 +280,14 @@ taille=`fdisk -l $configParameter | sed -n 2p | cut -d ' ' -f 5`
 
 dd bs=4096 if=/dev/zero | pv --size $taille | dd bs=4096 of=$configParameter
 
+
+echo -en "\ec"
+echo "===Copy the launching file for lamamos (launch a configure at every boot)==="
+cp lamamos/lamamos /etc/init.d/
+chmod 755 /etc/init.d/lamamos
+update-rc.d lamamos defaults
+
+
 echo -en "\ec"
 echo "===Finally we launch the first configuration using Rex==="
 cd /etc/lamamos/rex/
