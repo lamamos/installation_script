@@ -237,19 +237,19 @@ getConfigParameter(){
 
 
 
+##TODO : need to detect the right interface on wich we need to change the ip. Detect the network
+#echo -en "\ec"
+#echo "===We set the configured IP==="
+#
+#if [ $isFirstServer -gt 0 ]
+#then
+#  getConfigParameter firstServIP;
+#else
+#  getConfigParameter SeconServIP;
+#fi
 
-echo -en "\ec"
-echo "===We set the configured IP==="
-
-if [ $isFirstServer -gt 0 ]
-then
-  getConfigParameter firstServIP;
-else
-  getConfigParameter SeconServIP;
-fi
-
-#add a apply configuration for the IP
-ïfconfig eth0 $configParameter
+##add a apply configuration for the IP
+#ïfconfig eth0 $configParameter
 
 
 
