@@ -219,6 +219,10 @@ else
     validateConfiguration;
     echo -en "\ec"
   done
+  #add a apply configuration for the IP
+  ïfconfig eth0 $server1IP
+
+  #write the configuration to a file
   writeConfigToFile;
 fi
 
