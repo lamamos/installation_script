@@ -219,8 +219,6 @@ else
     validateConfiguration;
     echo -en "\ec"
   done
-  #add a apply configuration for the IP
-  ïfconfig eth0 $server1IP
 
   #write the configuration to a file
   writeConfigToFile;
@@ -236,6 +234,26 @@ getConfigParameter(){
 
   configParameter=`cat lamamos/lamamos.conf | grep "$1" | sed "s/\W*'$1' => '\(.*\)',/\1/"`;
 }
+
+
+
+
+echo -en "\ec"
+echo "===We set the configured IP==="
+
+if [ $isFirstServer -gt 0 ]
+then
+  getConfigParameter firstServIP;
+else
+  getConfigParameter SeconServIP;
+fi
+
+#add a apply configuration for the IP
+ïfconfig eth0 $configParameter
+
+
+
+
 
 
 echo -en "\ec"
