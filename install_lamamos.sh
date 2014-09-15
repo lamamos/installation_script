@@ -14,7 +14,7 @@ apt-get install -y git apache2-utils
 
 echo -en "\ec"
 echo "===We update the project==="
-git pull
+git pull origin master
 
 echo "===We get the submodules of the project==="
 git submodule init
