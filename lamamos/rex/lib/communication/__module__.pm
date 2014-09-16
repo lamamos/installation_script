@@ -87,6 +87,8 @@ task waitOtherServ => sub {
   $localModule = $_[0];
   $localState = $_[1];
 
+  print "I am in the state ".$localState." in the : ".$localModule." module.\n";
+
   sendState($localModule, $localState);
 
   #would be better to use some sort of a signal
