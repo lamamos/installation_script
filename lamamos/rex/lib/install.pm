@@ -141,6 +141,7 @@ sub firstPartInstall {
 
   communication::waitOtherServ('firstInstall', 1);
 
+  print("Testing if I am the first server\n");
 
   #we now define the first server as primari (needed for the first synchronisation)
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
