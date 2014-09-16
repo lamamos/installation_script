@@ -101,6 +101,7 @@ sub firstPartInstall {
   Service::drbd::define();
 
 
+  print("Making data directory\n");
 
 
   #folder for the shared hard drives
@@ -110,6 +111,7 @@ sub firstPartInstall {
     mode    => 755;
 
 
+  print("Installing pacemaker\n");
 
 
   #pacemaker	
@@ -121,12 +123,15 @@ sub firstPartInstall {
     'multicast_address' => '226.99.5.1',
   });
 
+  print("Configuring pacemaker\n");
 
   Service::pacemaker::service::define({
 
     'name'    => 'pacemaker',
     'version' => '1',
   });
+
+  print("Waiting for the pacemaker connexion\n");
 
   #TODO : check this works fine
   Service::pacemaker::waitForTwoServToConnect();
