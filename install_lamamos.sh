@@ -7,6 +7,13 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 
+#taken from : https://people.debian.org/~schultmc/locales.html
+echo -en "\ec"
+echo "=====We are going to install the locals====="
+cp locale.gen /etc/locale.gen
+/usr/sbin/locale-gen
+
+
 echo -en "\ec"
 echo "=====We are going to install git====="
 apt-get update
