@@ -94,7 +94,7 @@ task waitOtherServ => sub {
   #would be better to use some sort of a signal
   while( !(($otherServModule eq $localModule,) && ($otherServState == $localState)) ){
 
-    print "I am waiting for the other server\n";
+    print "I am waiting for the other server : I ".$localModule.":".$localState.", other : ".$otherServModule.":".$otherServState."\n";
     sleep(1);
   };
 };
