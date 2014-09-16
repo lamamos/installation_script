@@ -84,14 +84,20 @@ task stop => sub {
 
 task waitOtherServ => sub {
 
+  sleep(4); #we wait 4 times the next sleep to be sure that the other server have 
+            #processed the info of our previus change state
+
   $localModule = $_[0];
   $localState = $_[1];
+
+  print "I am in the state ".$localState." in the : ".$localModule." module.\n";
 
   sendState($localModule, $localState);
 
   #would be better to use some sort of a signal
   while( !(($otherServModule eq $localModule,) && ($otherServState == $localState)) ){
 
+    print "I am waiting for the other server : I ".$localModule.":".$localState.", other : ".$otherServModule.":".$otherServState."\n";
     sleep(1);
   };
 };

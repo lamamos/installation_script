@@ -1,4 +1,19 @@
 #!/bin/bash
+
+#test if we are root
+if [[ $EUID -ne 0 ]]; then
+  echo "You must be a root user" 2>&1
+  exit 1
+fi
+
+
+#taken from : https://people.debian.org/~schultmc/locales.html
+echo -en "\ec"
+echo "=====We are going to install the locals====="
+cp locale.gen /etc/locale.gen
+/usr/sbin/locale-gen
+
+
 echo -en "\ec"
 echo "=====We are going to install git====="
 apt-get update
@@ -6,7 +21,7 @@ apt-get install -y git apache2-utils
 
 echo -en "\ec"
 echo "===We update the project==="
-git pull
+git pull origin master
 
 echo "===We get the submodules of the project==="
 git submodule init
@@ -211,6 +226,8 @@ else
     validateConfiguration;
     echo -en "\ec"
   done
+
+  #write the configuration to a file
   writeConfigToFile;
 fi
 
@@ -224,6 +241,26 @@ getConfigParameter(){
 
   configParameter=`cat lamamos/lamamos.conf | grep "$1" | sed "s/\W*'$1' => '\(.*\)',/\1/"`;
 }
+
+
+
+##TODO : need to detect the right interface on wich we need to change the ip. Detect the network
+#echo -en "\ec"
+#echo "===We set the configured IP==="
+#
+#if [ $isFirstServer -gt 0 ]
+#then
+#  getConfigParameter firstServIP;
+#else
+#  getConfigParameter SeconServIP;
+#fi
+
+##add a apply configuration for the IP
+#ïfconfig eth0 $configParameter
+
+
+
+
 
 
 echo -en "\ec"

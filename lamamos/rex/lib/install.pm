@@ -101,6 +101,7 @@ sub firstPartInstall {
   Service::drbd::define();
 
 
+  print("Making data directory\n");
 
 
   #folder for the shared hard drives
@@ -110,6 +111,7 @@ sub firstPartInstall {
     mode    => 755;
 
 
+  print("Installing pacemaker\n");
 
 
   #pacemaker	
@@ -121,12 +123,15 @@ sub firstPartInstall {
     'multicast_address' => '226.99.5.1',
   });
 
+  print("Configuring pacemaker\n");
 
   Service::pacemaker::service::define({
 
     'name'    => 'pacemaker',
     'version' => '1',
   });
+
+  print("Waiting for the pacemaker connexion\n");
 
   #TODO : check this works fine
   Service::pacemaker::waitForTwoServToConnect();
@@ -136,9 +141,12 @@ sub firstPartInstall {
 
   communication::waitOtherServ('firstInstall', 1);
 
+  print("Testing if I am the first server\n");
 
   #we now define the first server as primari (needed for the first synchronisation)
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
+
+    print("Installing pacemaker no-quorum-policy\n");
 
     Service::pacemaker::property::define({
 
@@ -146,11 +154,15 @@ sub firstPartInstall {
       'value' => 'ignore',
     });
 
+    print("Installing pacemaker stonith-enabled\n");
+
     Service::pacemaker::property::define({
 
       'name' => 'stonith-enabled',
       'value' => 'false',
     });
+
+    print("Installing pacemaker resource-stickiness\n");
 
     Service::pacemaker::rsc_defaults::define({
 
@@ -159,6 +171,7 @@ sub firstPartInstall {
     });
 
 
+    print("Installing pacemaker p_drbd_ocfs2\n");
 
     # primitive p_drbd_ocfs2 ocf:linbit:drbd params drbd_resource="r0"
     Service::pacemaker::primitive::define({
@@ -169,6 +182,8 @@ sub firstPartInstall {
       'primitive_type' => 'drbd',
       'parameters' => {'drbd_resource' => 'r0',},
     });
+
+    print("Installing pacemaker ms_drbd_ocfs2\n");
 
     # ms ms_drbd_ocfs2 p_drbd_ocfs2 meta master-max=2 clone-max=2 notify=true
     Service::pacemaker::master::define({
@@ -183,6 +198,7 @@ sub firstPartInstall {
     });
 
 
+    print("Installing pacemaker resDLM\n");
 
     # primitive resDLM ocf:pacemaker:controld
     Service::pacemaker::primitive::define({
@@ -193,6 +209,8 @@ sub firstPartInstall {
       'primitive_type' => 'controld',
     });
 
+    print("Installing pacemaker cloneDLM\n");
+
     # clone cloneDLM resDLM meta globally-unique="false" interleave="true"
     Service::pacemaker::clone::define({
 
@@ -201,6 +219,8 @@ sub firstPartInstall {
       'meta' => {'globally-unique' => 'false', 'interleave' => 'true',},
     });
 
+    print("Installing pacemaker colDLMDRBD\n");
+
     # colocation colDLMDRBD inf: cloneDLM ms_drbd_ocfs2:Master
     Service::pacemaker::colocation::define({
 
@@ -208,6 +228,8 @@ sub firstPartInstall {
       'score' => 'INFINITY',
       'primitives' => ['cloneDLM', 'ms_drbd_ocfs2:Master'],
     });
+
+    print("Installing pacemaker ordDRBDDLM\n");
 
     # order ordDRBDDLM inf: ms_drbd_ocfs2:promote cloneDLM
     Service::pacemaker::order::define({
@@ -220,6 +242,7 @@ sub firstPartInstall {
 
 
 
+    print("Installing pacemaker resO2CB\n");
 
     # primitive resO2CB ocf:pacemaker:o2cb
     Service::pacemaker::primitive::define({
@@ -230,6 +253,8 @@ sub firstPartInstall {
       'primitive_type' => 'o2cb',
     });
 
+    print("Installing pacemaker cloneO2CB\n");
+
     # clone cloneO2CB resO2CB meta globally-unique="false" interleave="true"
     Service::pacemaker::clone::define({
 
@@ -238,6 +263,8 @@ sub firstPartInstall {
       'meta' => {'globally-unique' => 'false', 'interleave' => 'true',},
     });
 
+    print("Installing pacemaker colO2CBDLM\n");
+
     # colocation colO2CBDLM inf: cloneO2CB cloneDLM
     Service::pacemaker::colocation::define({
 
@@ -245,6 +272,8 @@ sub firstPartInstall {
       'score' => 'INFINITY',
       'primitives' => ['cloneO2CB', 'cloneDLM'],
     });
+
+    print("Installing pacemaker ordDLMO2CB\n");
 
     # order ordDLMO2CB inf: cloneDLM cloneO2CB
     Service::pacemaker::order::define({
