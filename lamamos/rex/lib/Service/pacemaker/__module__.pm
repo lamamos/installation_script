@@ -55,7 +55,6 @@ task define => sub {
 
 	if(!`grep START=yes /etc/default/corosync`){
 
-		say "on ecrit";
 		`sed -i s/START=no/START=yes/ /etc/default/corosync`;
 	}
 
